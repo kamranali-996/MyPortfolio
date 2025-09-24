@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laser Cutting | Digital FABLAB</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #e74c3c;
+            --secondary-color: #f39c12;
+            --text-color: #333;
+            --light-bg: #f9f9f9;
+            --dark-bg: #1a1a1a;
+            --dark-text: #f0f0f0;
+            --accent-color: #9b59b6;
+            --transition: all 0.3s ease;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --border-radius: 8px;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--light-bg);
+            margin: 0;
+            padding: 0;
+            transition: var(--transition);
+        }
+
+        body.dark-mode {
+            color: var(--dark-text);
+            background-color: var(--dark-bg);
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px 15px;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: sticky;
+            top: 0;
+            background-color: #fff;
+            box-shadow: var(--shadow);
+            z-index: 100;
+            padding: 15px 0;
+            transition: var(--transition);
+        }
+
+        body.dark-mode .navbar {
+            background-color: #222;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .nav-buttons {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 12px;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+
+        .back-btn:hover {
+            background-color: rgba(231, 76, 60, 0.1);
+        }
+
+        body.dark-mode .back-btn {
+            color: var(--dark-text);
+        }
+
+        body.dark-mode .back-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .dark-mode-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            color: var(--text-color);
+            transition: var(--transition);
+            padding: 8px;
+            border-radius: 50%;
+        }
+
+        .dark-mode-toggle:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        body.dark-mode .dark-mode-toggle {
+            color: var(--dark-text);
+        }
+
+        body.dark-mode .dark-mode-toggle:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Content Styles */
+        .content {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            margin: 20px 0 40px;
+        }
+
+        body.dark-mode .content {
+            background-color: #2a2a2a;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-size: 2rem;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h2 {
+            color: var(--primary-color);
+            margin-top: 35px;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+            background-color: rgba(231, 76, 60, 0.1);
+            padding: 10px 15px;
+            border-radius: var(--border-radius);
+            display: inline-block;
+            position: relative;
+        }
+
+        .day-number {
+            background: var(--primary-color);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 10px;
+            font-size: 0.9rem;
+        }
+
+        h3 {
+            color: var(--accent-color);
+            margin-top: 25px;
+            margin-bottom: 12px;
+            font-size: 1.2rem;
+        }
+
+        hr {
+            border: 0;
+            height: 2px;
+            background: linear-gradient(to right, transparent, var(--primary-color), transparent);
+            margin: 30px 0;
+        }
+
+        body.dark-mode hr {
+            background: linear-gradient(to right, transparent, #666, transparent);
+        }
+
+        ul {
+            padding-left: 20px;
+            margin: 15px 0 25px;
+        }
+
+        li {
+            margin-bottom: 8px;
+            position: relative;
+            padding-left: 10px;
+            line-height: 1.5;
+        }
+
+        li:before {
+            content: '▶';
+            color: var(--secondary-color);
+            font-weight: bold;
+            margin-right: 10px;
+            font-size: 0.8rem;
+        }
+
+        /* Activity Sections */
+        .activity-section {
+            background: linear-gradient(135deg, var(--secondary-color), #e67e22);
+            color: white;
+            padding: 15px 20px;
+            border-radius: var(--border-radius);
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: var(--shadow);
+        }
+
+        .activity-icon {
+            font-size: 1.2rem;
+            min-width: 24px;
+        }
+
+        .activity-content {
+            font-weight: 500;
+        }
+
+        /* Image Section */
+        .image-container {
+            width: 100%;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .section-image {
+            max-width: 100%;
+            height: auto;
+            max-height: 350px;
+            object-fit: contain;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            border: 1px solid #eee;
+            padding: 5px;
+            background-color: white;
+        }
+
+        body.dark-mode .section-image {
+            border-color: #444;
+            background-color: #333;
+        }
+
+        .image-caption {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 8px;
+            font-style: italic;
+        }
+
+        body.dark-mode .image-caption {
+            color: #aaa;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #222;
+            color: #fff;
+            padding: 25px 0;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        body.dark-mode footer {
+            background-color: #111;
+        }
+
+        .copyright {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+                padding: 10px;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+                flex-direction: column;
+                text-align: center;
+                gap: 5px;
+            }
+            
+            h2 {
+                font-size: 1.3rem;
+                display: block;
+            }
+            
+            .nav-logo {
+                font-size: 1.3rem;
+            }
+            
+            .back-btn {
+                padding: 6px 10px;
+                font-size: 0.8rem;
+            }
+            
+            .activity-section {
+                flex-direction: column;
+                text-align: center;
+                gap: 5px;
+            }
+        }
+    </style>
+</head>
+<body>              
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="nav-logo">Digital FABLAB</a>
+            <div class="nav-buttons">
+                <a href="index.html" class="back-btn">
+                    <i class="fas fa-arrow-left"></i> Back to All Modules
+                </a>
+                <button class="dark-mode-toggle" id="darkModeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="content">
+            <h1><i class="fas fa-cut"></i> 7-Day Learning Journey of Laser Cutting</h1>
+            
+            <h2><span class="day-number">1</span>Intro & Applications</h2>
+            <div class="image-container">
+                <img src="images/lasercut1.jpg" alt="Laser Cutter in Operation" class="section-image">
+                <div class="image-caption">Professional CO2 laser cutter processing materials with precision</div>
+            </div>
+            
+            <h3>What is laser cutting?</h3>
+            <ul>
+                <li>Thermal cutting process using focused laser beam</li>
+                <li>Computer-controlled precision manufacturing</li>
+                <li>Non-contact material processing method</li>
+                <li>Versatile tool for prototyping and production</li>
+            </ul>
+            
+            <h3>Types of lasers</h3>
+            <ul>
+                <li><strong>CO2 Lasers:</strong> Wood, acrylic, leather, paper, fabric</li>
+                <li><strong>Fiber Lasers:</strong> Metals, some plastics, high precision</li>
+                <li><strong>Diode Lasers:</strong> Light engraving, hobby applications</li>
+            </ul>
+            
+            <h3>Safety basics</h3>
+            <ul>
+                <li>Eye protection and laser safety glasses</li>
+                <li>Proper ventilation and fume extraction</li>
+                <li>Fire safety protocols and emergency procedures</li>
+                <li>Material safety data sheets (MSDS) knowledge</li>
+            </ul>
+
+            <div class="activity-section">
+                <div class="activity-icon">✅</div>
+                <div class="activity-content">Activity: List 5 laser-cut items you encounter daily</div>
+            </div>
+            
+            <hr>
+            
+            <h2><span class="day-number">2</span>Hardware & Software</h2>
+            <div class="image-container">
+                <img src="images/lasercut2.jpg" alt="Laser Cutting Software Interface" class="section-image">
+                <div class="image-caption">Professional laser cutting software showing vector design and cutting parameters</div>
+            </div>
+            
+            <h3>Laser cutter components</h3>
+            <ul>
+                <li><strong>Laser tube:</strong> CO2 gas mixture generates laser beam</li>
+                <li><strong>Cutting bed:</strong> Honeycomb or slat support system</li>
+                <li><strong>Exhaust system:</strong> Fume extraction and filtration</li>
+                <li><strong>Control electronics:</strong> Motion control and laser power</li>
+                <li><strong>Cooling system:</strong> Water cooling for laser tube</li>
+            </ul>
+            
+            <h3>Software: LaserCAD & alternatives</h3>
+            <ul>
+                <li>Industry standard LaserCAD software versions</li>
+                <li>Alternative software: LightBurn, RDWorks, K40 Whisperer</li>
+                <li>CAD integration with AutoCAD, Illustrator, Inkscape</li>
+                <li>File import/export capabilities and compatibility</li>
+            </ul>
+            
+            <h3>Vector vs Raster & file types</h3>
+            <ul>
+                <li><strong>Vector (.svg, .dxf):</strong> Cutting lines, precise scalable graphics</li>
+                <li><strong>Raster (.png, .jpg):</strong> Engraving, photographic reproduction</li>
+                <li>File preparation and optimization techniques</li>
+                <li>Color coding for different operations</li>
+            </ul>
+
+            <div class="activity-section">
+                <div class="activity-icon">✅</div>
+                <div class="activity-content">Activity: Design a basic geometric shape in vector software</div>
+            </div>
+            
+            <hr>
+            
+            <h2><span class="day-number">3</span>Design Basics</h2>
+            <div class="image-container">
+                <img src="images/lasercut3.jpeg" alt="Laser Cut Design Examples" class="section-image">
+                <div class="image-caption">Various laser cut wooden products showing cut and engrave techniques</div>
+            </div>
+            
+            <h3>Cut vs engrave setup</h3>
+            <ul>
+                <li><strong>Cutting:</strong> Full power, optimal speed, complete material penetration</li>
+                <li><strong>Engraving:</strong> Variable power, controlled depth, surface marking</li>
+                <li>Layer management and operation sequencing</li>
+                <li>Color coding system for different functions</li>
+            </ul>
+            
+            <h3>Design tips for press fit</h3>
+            <ul>
+                <li>Kerf width compensation for tight joints</li>
+                <li>Material thickness variations and tolerances</li>
+                <li>Joint design: tabs, slots, living hinges</li>
+                <li>Assembly sequence planning</li>
+            </ul>
+
+            <div class="activity-section">
+                <div class="activity-icon">✅</div>
+                <div class="activity-content">Activity: Design a small box with engraving decoration</div>
+            </div>
+            
+            <hr>
+            
+            <h2><span class="day-number">4</span>Materials & Settings</h2>
+            <div class="image-container">
+                <img src="images/lasercut4.jpeg" alt="Laser Cut Design Examples" class="section-image">
+                <div class="image-caption">Various laser cut wooden products showing cut and engrave techniques</div>
+            </div>
+            
+            <h3>Materials compatibility</h3>
+            <ul>
+                <li><strong>Wood:</strong> Plywood, MDF, hardwoods (various thicknesses)</li>
+                <li><strong>Acrylic types:</strong> Cast vs extruded, clear vs colored</li>
+                <li><strong>Paper & cardboard:</strong> Prototyping, templates, packaging</li>
+                <li><strong>Other materials:</strong> Leather, fabric, foam, some plastics</li>
+            </ul>
+            
+            <h3>Power/speed settings optimization</h3>
+            <ul>
+                <li>Power percentage vs material thickness relationship</li>
+                <li>Speed settings for quality vs efficiency balance</li>
+                <li>Multiple pass techniques for thick materials</li>
+                <li>PPI (Pulses Per Inch) for engraving quality</li>
+            </ul>
+            
+            <h3>Testing procedures</h3>
+            <ul>
+                <li>Speed/power test grids and matrices</li>
+                <li>Material sample testing protocols</li>
+                <li>Quality assessment criteria</li>
+                <li>Parameter documentation and library building</li>
+            </ul>
+
+            <div class="activity-section">
+                <div class="activity-icon">✅</div>
+                <div class="activity-content">Activity: Run a speed/power test grid on cardboard</div>
+            </div>
+            
+            <hr>
+            
+            <h2><span class="day-number">5</span>Operating the Laser</h2>
+            
+            <h3>Machine setup procedures</h3>
+            <ul>
+                <li><strong>Focusing:</strong> Laser beam focus adjustment for material thickness</li>
+                <li><strong>Bed setup:</strong> Material positioning and securing</li>
+                <li><strong>Air assist:</strong> Compressed air for clean cuts and fire prevention</li>
+                <li><strong>Exhaust system:</strong> Proper ventilation and fume extraction</li>
+            </ul>
+            
+            <h3>File processing & job execution</h3>
+            <ul>
+                <li>Sending design files to laser cutter</li>
+                <li>Job queue management and batch processing</li>
+                <li>Preview functions and cut path verification</li>
+                <li>Real-time monitoring during operation</li>
+            </ul>
+            
+            <h3>Safety checks & emergency procedures</h3>
+            <ul>
+                <li>Pre-operation safety checklist</li>
+                <li>Emergency stop button locations and procedures</li>
+                <li>Fire suppression systems and protocols</li>
+                <li>Personal protective equipment (PPE) requirements</li>
+            </ul>
+
+            <div class="activity-section">
+                <div class="activity-icon">✅</div>
+                <div class="activity-content">Activity: Cut your first real design from concept to completion</div>
+            </div>
+            
+            <hr>
+            
+            <h2><span class="day-number">6</span>Project Day</h2>
+            
+            <h3>Project planning & execution</h3>
+            <ul>
+                <li><strong>Useful projects:</strong> Phone stands, storage boxes, 3D assemblies</li>
+                <li>Design complexity progression and skill building</li>
+                <li>Functional vs decorative design considerations</li>
+                <li>Time management and project scope planning</li>
+            </ul>
+            
+            <h3>File preparation & optimization</h3>
+            <ul>
+                <li>Design finalization and technical review</li>
+                <li>Nesting layouts for material efficiency</li>
+                <li>Cut order optimization for quality and speed</li>
+                <li>Backup plans and design alternatives</li>
+            </ul>
+            
+            <h3>Assembly & finishing</h3>
+            <ul>
+                <li>Component organization and identification</li>
+                <li>Assembly sequence and joint fitting</li>
+                <li>Post-processing: sanding, gluing, finishing</li>
+                <li>Quality control and final inspection</li>
+            </ul>
+
+            <div class="activity-section">
+                <div class="activity-icon">✅</div>
+                <div class="activity-content">Activity: Complete & document your project with photos and notes</div>
+            </div>
+            
+            <hr>
+            
+            <h2><span class="day-number">7</span>Review & Maintenance</h2>
+            
+            <h3>Common issues & troubleshooting</h3>
+            <ul>
+                <li><strong>Burn marks:</strong> Excessive power, slow speed, poor ventilation</li>
+                <li><strong>Incomplete cuts:</strong> Low power, fast speed, focus issues</li>
+                <li>Edge quality problems and surface finishing</li>
+                <li>Dimensional accuracy and kerf compensation</li>
+            </ul>
+            
+            <h3>Basic maintenance procedures</h3>
+            <ul>
+                <li><strong>Lens cleaning:</strong> Proper techniques and cleaning materials</li>
+                <li><strong>Mirror alignment:</strong> Beam path optimization</li>
+                <li>Cutting bed maintenance and honeycomb cleaning</li>
+                <li>Exhaust system filter replacement and maintenance</li>
+            </ul>
+            
+            <h3>Project showcase & reflection</h3>
+            <ul>
+                <li>Documentation methods: photos, videos, process notes</li>
+                <li>Portfolio development and presentation skills</li>
+                <li>Peer review and constructive feedback</li>
+                <li>Future learning paths and advanced techniques</li>
+            </ul>
+
+            <div class="activity-section">
+                <div class="activity-icon">✅</div>
+                <div class="activity-content">Activity: Present final work & reflect on learning journey</div>
+            </div>
+            
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="copyright">
+                <p>&copy; 2025 Digital FABLAB. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Dark mode toggle functionality
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const body = document.body;
+        
+        // Check for saved theme preference or prefer-color-scheme
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        
+        // Apply saved theme or system preference
+        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+            body.classList.add('dark-mode');
+            darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        }
+        
+        // Toggle dark mode
+        darkModeToggle.addEventListener('click', () => {
+            if (body.classList.contains('dark-mode')) {
+                body.classList.remove('dark-mode');
+                darkModeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+                localStorage.setItem('theme', 'light');
+            } else {
+                body.classList.add('dark-mode');
+                darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java OOP | Digital FABLAB</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2196F3;
+            --secondary-color: #FF9800;
+            --text-color: #333;
+            --light-bg: #f9f9f9;
+            --dark-bg: #1a1a1a;
+            --dark-text: #f0f0f0;
+            --accent-color: #4CAF50;
+            --code-bg: #f8f8f8;
+            --code-border: #ddd;
+            --transition: all 0.3s ease;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --border-radius: 8px;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--light-bg);
+            margin: 0;
+            padding: 0;
+            transition: var(--transition);
+        }
+
+        body.dark-mode {
+            color: var(--dark-text);
+            background-color: var(--dark-bg);
+            --code-bg: #2d2d2d;
+            --code-border: #555;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px 15px;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: sticky;
+            top: 0;
+            background-color: #fff;
+            box-shadow: var(--shadow);
+            z-index: 100;
+            padding: 15px 0;
+            transition: var(--transition);
+        }
+
+        body.dark-mode .navbar {
+            background-color: #222;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .nav-buttons {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 12px;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+
+        .back-btn:hover {
+            background-color: rgba(33, 150, 243, 0.1);
+        }
+
+        body.dark-mode .back-btn {
+            color: var(--dark-text);
+        }
+
+        body.dark-mode .back-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .dark-mode-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            color: var(--text-color);
+            transition: var(--transition);
+            padding: 8px;
+            border-radius: 50%;
+        }
+
+        .dark-mode-toggle:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        body.dark-mode .dark-mode-toggle {
+            color: var(--dark-text);
+        }
+
+        body.dark-mode .dark-mode-toggle:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Content Styles */
+        .content {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            margin: 20px 0 40px;
+        }
+
+        body.dark-mode .content {
+            background-color: #2a2a2a;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-size: 2rem;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h2 {
+            color: var(--primary-color);
+            margin-top: 35px;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+            background-color: rgba(33, 150, 243, 0.1);
+            padding: 10px 15px;
+            border-radius: var(--border-radius);
+            display: inline-block;
+            position: relative;
+        }
+
+        .day-number {
+            background: var(--primary-color);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 10px;
+            font-size: 0.9rem;
+        }
+
+        h3 {
+            color: var(--accent-color);
+            margin-top: 25px;
+            margin-bottom: 12px;
+            font-size: 1.2rem;
+        }
+
+        hr {
+            border: 0;
+            height: 2px;
+            background: linear-gradient(to right, transparent, var(--primary-color), transparent);
+            margin: 30px 0;
+        }
+
+        body.dark-mode hr {
+            background: linear-gradient(to right, transparent, #666, transparent);
+        }
+
+        ul {
+            padding-left: 20px;
+            margin: 15px 0 25px;
+        }
+
+        li {
+            margin-bottom: 8px;
+            position: relative;
+            padding-left: 10px;
+            line-height: 1.5;
+        }
+
+        li:before {
+            content: '▶';
+            color: var(--secondary-color);
+            font-weight: bold;
+            margin-right: 10px;
+            font-size: 0.8rem;
+        }
+
+        /* Code Blocks */
+        .code-section {
+            background-color: var(--code-bg);
+            border: 1px solid var(--code-border);
+            border-radius: var(--border-radius);
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .code-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 15px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .code-content {
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            overflow-x: auto;
+            white-space: pre;
+        }
+
+        body.dark-mode .code-content {
+            background-color: var(--code-bg);
+            color: #e8e8e8;
+        }
+
+        /* Key Concepts */
+        .concepts-section {
+            background: linear-gradient(135deg, var(--accent-color), #45a049);
+            color: white;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            margin: 20px 0;
+            box-shadow: var(--shadow);
+        }
+
+        .concepts-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .concepts-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .concepts-list li {
+            padding: 5px 0;
+            padding-left: 20px;
+        }
+
+        .concepts-list li:before {
+            content: '✓';
+            color: white;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        /* Overview Section */
+        .overview-section {
+            background: linear-gradient(135deg, var(--secondary-color), #f57c00);
+            color: white;
+            padding: 25px;
+            border-radius: var(--border-radius);
+            margin: 20px 0;
+            box-shadow: var(--shadow);
+        }
+
+        .overview-section h3 {
+            color: white;
+            margin-top: 0;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #222;
+            color: #fff;
+            padding: 25px 0;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        body.dark-mode footer {
+            background-color: #111;
+        }
+
+        .copyright {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+                padding: 10px;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+                flex-direction: column;
+                text-align: center;
+                gap: 5px;
+            }
+            
+            h2 {
+                font-size: 1.3rem;
+                display: block;
+            }
+            
+            .nav-logo {
+                font-size: 1.3rem;
+            }
+            
+            .back-btn {
+                padding: 6px 10px;
+                font-size: 0.8rem;
+            }
+            
+            .code-content {
+                font-size: 0.8rem;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>              
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="nav-logo">Digital FABLAB</a>
+            <div class="nav-buttons">
+                <a href="index.html" class="back-btn">
+                    <i class="fas fa-arrow-left"></i> Back to All Modules
+                </a>
+                <button class="dark-mode-toggle" id="darkModeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="content">
+            <h1><i class="fab fa-java"></i> 7-Day OOP Learning Journey with Java</h1>
+            
+            <div class="overview-section">
+                <h3><i class="fas fa-book"></i> Overview</h3>
+                <p>This comprehensive 7-day structured learning plan (2 hours/day) covers Object-Oriented Programming fundamentals in Java. Each day builds upon previous concepts, progressing from basic programming to advanced OOP principles, culminating in a complete Library Management System project.</p>
+                <p><strong>Learning Outcomes:</strong> Master the four OOP pillars (Encapsulation, Abstraction, Inheritance, Polymorphism) and apply them in real-world scenarios.</p>
+            </div>
+            
+            <h2><span class="day-number">1</span>Programming Fundamentals</h2>
+            
+            <div class="concepts-section">
+                <div class="concepts-title">
+                    <i class="fas fa-lightbulb"></i> Key Concepts Learned
+                </div>
+                <ul class="concepts-list">
+                    <li>Variables, operators, loops, and conditionals</li>
+                    <li>Function creation and simple problem-solving</li>
+                    <li>Basic algorithms: factorial, prime checking, Fibonacci</li>
+                </ul>
+            </div>
+
+            <div class="code-section">
+                <div class="code-header">
+                    <i class="fas fa-code"></i> Day1Basics.java
+                </div>
+                <div class="code-content">// Day1Basics.java
+public class Day1Basics {
+    static int factorial(int n) {
+        int result = 1;
+        for (int i = 2; i <= n; i++) result *= i;
+        return result;
+    }
+
+    static boolean isPrime(int n) {
+        if (n <= 1) return false;
+        for (int i = 2; i * i <= n; i++) if (n % i == 0) return false;
+        return true;
+    }
+
+    public static void main(String[] args) {
+        int a = 10, b = 3;
+        System.out.println("a + b = " + (a + b));
+        System.out.println("Factorial of 5 = " + factorial(5));
+        System.out.println("Is 13 prime? " + isPrime(13));
+    }
+}</div>
+            </div>
+            
+            <hr>
+            
+            <h2><span class="day-number">2</span>Functions & Recursion</h2>
+            
+            <div class="concepts-section">
+                <div class="concepts-title">
+                    <i class="fas fa-lightbulb"></i> Key Concepts Learned
+                </div>
+                <ul class="concepts-list">
+                    <li>Modular programming with functions</li>
+                    <li>Recursive algorithm implementation</li>
+                    <li>Base case and recursive case design</li>
+                </ul>
+            </div>
+
+            <div class="code-section">
+                <div class="code-header">
+                    <i class="fas fa-code"></i> Day2Functions.java
+                </div>
+                <div class="code-content">// Day2Functions.java
+public class Day2Functions {
+    static int factorialRec(int n) {
+        if (n <= 1) return 1;
+        return n * factorialRec(n - 1);
+    }
+
+    static int fibRec(int n) {
+        if (n <= 1) return n;
+        return fibRec(n - 1) + fibRec(n - 2);
+    }
+
+    public static void main(String[] args) {
+        System.out.println("Factorial(5) = " + factorialRec(5));
+        System.out.println("Fibonacci(6) = " + fibRec(6));
+    }
+}</div>
+            </div>
+            
+            <hr>
+            
+            <h2><span class="day-number">3</span>Classes & Objects</h2>
+            
+            <div class="concepts-section">
+                <div class="concepts-title">
+                    <i class="fas fa-lightbulb"></i> Key Concepts Learned
+                </div>
+                <ul class="concepts-list">
+                    <li>Class definition and object instantiation</li>
+                    <li>Constructors and method implementation</li>
+                    <li>Instance variables and method behavior</li>
+                </ul>
+            </div>
+
+            <div class="code-section">
+                <div class="code-header">
+                    <i class="fas fa-code"></i> Car.java & Day3CarDemo.java
+                </div>
+                <div class="code-content">// Car.java
+class Car {
+    String brand, model;
+    int year, mileage;
+
+    Car(String brand, String model, int year, int mileage) {
+        this.brand = brand;
+        this.model = model;
+        this.year = year;
+        this.mileage = mileage;
+    }
+
+    void drive(int km) {
+        mileage += km;
+        System.out.println("Driven " + km + " km. Mileage: " + mileage);
+    }
+
+    void display() {
+        System.out.println(brand + " " + model + " (" + year + ") - " + mileage + " km");
+    }
+}
+
+public class Day3CarDemo {
+    public static void main(String[] args) {
+        Car c1 = new Car("Toyota", "Yaris", 2020, 0);
+        c1.display();
+        c1.drive(120);
+    }
+}</div>
+            </div>
+            
+            <hr>
+            
+            <h2><span class="day-number">4</span>Encapsulation & Abstraction</h2>
+            
+            <div class="concepts-section">
+                <div class="concepts-title">
+                    <i class="fas fa-lightbulb"></i> Key Concepts Learned
+                </div>
+                <ul class="concepts-list">
+                    <li>Access modifiers (private, public) for data hiding</li>
+                    <li>Getter and setter methods for controlled access</li>
+                    <li>Data validation and business logic encapsulation</li>
+                </ul>
+            </div>
+
+            <div class="code-section">
+                <div class="code-header">
+                    <i class="fas fa-code"></i> BankAccount.java & Day4BankDemo.java
+                </div>
+                <div class="code-content">// BankAccount.java
+class BankAccount {
+    private String accountNumber;
+    private String owner;
+    private double balance;
+
+    BankAccount(String accountNumber, String owner, double balance) {
+        this.accountNumber = accountNumber;
+        this.owner = owner;
+        this.balance = balance;
+    }
+
+    public double getBalance() { return balance; }
+
+    public void deposit(double amount) {
+        if (amount > 0) balance += amount;
+    }
+
+    public void withdraw(double amount) {
+        if (amount > 0 && amount <= balance) balance -= amount;
+        else System.out.println("Insufficient funds!");
+    }
+
+    public void display() {
+        System.out.println("Account: " + accountNumber + ", Owner: " + owner + ", Balance: " + balance);
+    }
+}
+
+public class Day4BankDemo {
+    public static void main(String[] args) {
+        BankAccount acct = new BankAccount("AC123", "Anshuman", 500);
+        acct.display();
+        acct.deposit(250);
+        acct.withdraw(200);
+        acct.display();
+    }
+}</div>
+            </div>
+            
+            <hr>
+            
+            <h2><span class="day-number">5</span>Inheritance</h2>
+            
+            <div class="concepts-section">
+                <div class="concepts-title">
+                    <i class="fas fa-lightbulb"></i> Key Concepts Learned
+                </div>
+                <ul class="concepts-list">
+                    <li>Code reusability through inheritance</li>
+                    <li>Parent-child class relationships</li>
+                    <li>Method overriding with @Override annotation</li>
+                    <li>Super keyword for parent class access</li>
+                </ul>
+            </div>
+
+            <div class="code-section">
+                <div class="code-header">
+                    <i class="fas fa-code"></i> Person.java & Day5InheritanceDemo.java
+                </div>
+                <div class="code-content">// Person.java
+class Person {
+    String name;
+    int age;
+
+    Person(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    void display() {
+        System.out.println("Name: " + name + ", Age: " + age);
+    }
+}
+
+class Student extends Person {
+    String rollNo, course;
+
+    Student(String name, int age, String rollNo, String course) {
+        super(name, age);
+        this.rollNo = rollNo;
+        this.course = course;
+    }
+
+    @Override
+    void display() {
+        super.display();
+        System.out.println("Roll No: " + rollNo + ", Course: " + course);
+    }
+}
+
+public class Day5InheritanceDemo {
+    public static void main(String[] args) {
+        Student s = new Student("Tanu", 20, "IT40", "B.E. IT");
+        s.display();
+    }
+}</div>
+            </div>
+            
+            <hr>
+            
+            <h2><span class="day-number">6</span>Polymorphism</h2>
+            
+            <div class="concepts-section">
+                <div class="concepts-title">
+                    <i class="fas fa-lightbulb"></i> Key Concepts Learned
+                </div>
+                <ul class="concepts-list">
+                    <li>Runtime polymorphism with abstract classes</li>
+                    <li>Method overriding for dynamic behavior</li>
+                    <li>Abstract methods and concrete implementations</li>
+                    <li>Polymorphic method calls and late binding</li>
+                </ul>
+            </div>
+
+            <div class="code-section">
+                <div class="code-header">
+                    <i class="fas fa-code"></i> Shape.java & Day6PolymorphismDemo.java
+                </div>
+                <div class="code-content">// Shape.java
+abstract class Shape {
+    abstract double area();
+}
+
+class Circle extends Shape {
+    double radius;
+    Circle(double radius) { this.radius = radius; }
+
+    @Override
+    double area() { return Math.PI * radius * radius; }
+}
+
+class Rectangle extends Shape {
+    double w, h;
+    Rectangle(double w, double h) { this.w = w; this.h = h; }
+
+    @Override
+    double area() { return w * h; }
+}
+
+public class Day6PolymorphismDemo {
+    public static void main(String[] args) {
+        Shape s1 = new Circle(5);
+        Shape s2 = new Rectangle(4, 6);
+
+        System.out.println("Circle area = " + s1.area());
+        System.out.println("Rectangle area = " + s2.area());
+    }
+}</div>
+            </div>
+            
+            <hr>
+            
+            <h2><span class="day-number">7</span>Mini Project - Library Management System</h2>
+            
+            <div class="concepts-section">
+                <div class="concepts-title">
+                    <i class="fas fa-lightbulb"></i> Project Implementation
+                </div>
+                <ul class="concepts-list">
+                    <li>Applied Encapsulation, Inheritance, and Polymorphism</li>
+                    <li>Real-world system design with multiple classes</li>
+                    <li>Data management and object relationships</li>
+                    <li>Portfolio-ready project demonstration</li>
+                </ul>
+            </div>
+
+            <div class="code-section">
+                <div class="code-header">
+                    <i class="fas fa-code"></i> Library Management System - Day7LibraryDemo.java
+                </div>
+                <div class="code-content">// Book.java
+class Book {
+    String title, author, isbn;
+
+    Book(String title, String author, String isbn) {
+        this.title = title;
+        this.author = author;
+        this.isbn = isbn;
+    }
+
+    void display() {
+        System.out.println("Book: " + title + " by " + author + " [ISBN: " + isbn + "]");
+    }
+}
+
+class Member {
+    String name;
+    int memberId;
+
+    Member(String name, int memberId) {
+        this.name = name;
+        this.memberId = memberId;
+    }
+
+    void display() {
+        System.out.println("Member: " + name + " (ID: " + memberId + ")");
+    }
+}
+
+class Library {
+    Book[] books;
+    int count;
+
+    Library(int size) {
+        books = new Book[size];
+        count = 0;
+    }
+
+    void addBook(Book b) {
+        if (count < books.length) {
+            books[count++] = b;
+            System.out.println("Book added: " + b.title);
+        } else {
+            System.out.println("Library is full!");
+        }
+    }
+
+    void showBooks() {
+        System.out.println("--- Library Books ---");
+        for (int i = 0; i < count; i++) books[i].display();
+    }
+}
+
+public class Day7LibraryDemo {
+    public static void main(String[] args) {
+        Library lib = new Library(5);
+        Book b1 = new Book("OOP in Java", "James Gosling", "111");
+        Book b2 = new Book("Clean Code", "Robert Martin", "222");
+        Member m1 = new Member("Anshuman", 101);
+
+        lib.addBook(b1);
+        lib.addBook(b2);
+
+        m1.display();
+        lib.showBooks();
+    }
+}</div>
+            </div>
+
+            <div class="overview-section">
+                <h3><i class="fas fa-trophy"></i> Key Outcomes Achieved</h3>
+                <ul style="list-style: none; padding: 0; margin: 10px 0;">
+                    <li style="padding: 5px 0;"><strong>✓ OOP Mastery:</strong> Complete understanding of Encapsulation, Abstraction, Inheritance, and Polymorphism</li>
+                    <li style="padding: 5px 0;"><strong>✓ Real-world Application:</strong> Learned system design principles for practical Java development</li>
+                    <li style="padding: 5px 0;"><strong>✓ Portfolio Project:</strong> Completed Library Management System demonstrating all OOP concepts</li>
+                    <li style="padding: 5px 0;"><strong>✓ Programming Foundation:</strong> Solid base for advanced Java topics and frameworks</li>
+                </ul>
+            </div>
+            
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="copyright">
+                <p>&copy; 2025 Digital FABLAB. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Dark mode toggle functionality
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const body = document.body;
+        
+        // Check for saved theme preference or prefer-color-scheme
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        
+        // Apply saved theme or system preference
+        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+            body.classList.add('dark-mode');
+            darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        }
+        
+        // Toggle dark mode
+        darkModeToggle.addEventListener('click', () => {
+            if (body.classList.contains('dark-mode')) {
+                body.classList.remove('dark-mode');
+                darkModeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+                localStorage.setItem('theme', 'light');
+            } else {
+                body.classList.add('dark-mode');
+                darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3-Day PCB Designing Module | Digital FABLAB</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #9C27B0;
+            --secondary-color: #FF5722;
+            --text-color: #333;
+            --light-bg: #f9f9f9;
+            --dark-bg: #1a1a1a;
+            --dark-text: #f0f0f0;
+            --accent-color: #00BCD4;
+            --code-bg: #f8f8f8;
+            --code-border: #ddd;
+            --transition: all 0.3s ease;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --border-radius: 8px;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--light-bg);
+            margin: 0;
+            padding: 0;
+            transition: var(--transition);
+        }
+
+        body.dark-mode {
+            color: var(--dark-text);
+            background-color: var(--dark-bg);
+            --code-bg: #2d2d2d;
+            --code-border: #555;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px 15px;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: sticky;
+            top: 0;
+            background-color: #fff;
+            box-shadow: var(--shadow);
+            z-index: 100;
+            padding: 15px 0;
+            transition: var(--transition);
+        }
+
+        body.dark-mode .navbar {
+            background-color: #222;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .nav-buttons {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 12px;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+
+        .back-btn:hover {
+            background-color: rgba(156, 39, 176, 0.1);
+        }
+
+        body.dark-mode .back-btn {
+            color: var(--dark-text);
+        }
+
+        body.dark-mode .back-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .dark-mode-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            color: var(--text-color);
+            transition: var(--transition);
+            padding: 8px;
+            border-radius: 50%;
+        }
+
+        .dark-mode-toggle:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        body.dark-mode .dark-mode-toggle {
+            color: var(--dark-text);
+        }
+
+        body.dark-mode .dark-mode-toggle:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Content Styles */
+        .content {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            margin: 20px 0 40px;
+        }
+
+        body.dark-mode .content {
+            background-color: #2a2a2a;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-size: 2rem;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h2 {
+            color: var(--primary-color);
+            margin-top: 35px;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+            background-color: rgba(156, 39, 176, 0.1);
+            padding: 10px 15px;
+            border-radius: var(--border-radius);
+            display: inline-block;
+            position: relative;
+        }
+
+        .day-number {
+            background: var(--primary-color);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 10px;
+            font-size: 0.9rem;
+        }
+
+        .module-badge {
+            background: var(--secondary-color);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        h3 {
+            color: var(--accent-color);
+            margin-top: 25px;
+            margin-bottom: 12px;
+            font-size: 1.2rem;
+        }
+
+        hr {
+            border: 0;
+            height: 2px;
+            background: linear-gradient(to right, transparent, var(--primary-color), transparent);
+            margin: 30px 0;
+        }
+
+        body.dark-mode hr {
+            background: linear-gradient(to right, transparent, #666, transparent);
+        }
+
+        ul {
+            padding-left: 20px;
+            margin: 15px 0 25px;
+        }
+
+        li {
+            margin-bottom: 8px;
+            position: relative;
+            padding-left: 10px;
+            line-height: 1.5;
+        }
+
+        li:before {
+            content: '▶';
+            color: var(--secondary-color);
+            font-weight: bold;
+            margin-right: 10px;
+            font-size: 0.8rem;
+        }
+
+        /* Circuit Sections */
+        .circuit-section {
+            background: linear-gradient(135deg, var(--secondary-color), #F4511E);
+            color: white;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            margin: 20px 0;
+            box-shadow: var(--shadow);
+        }
+
+        .circuit-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Image Section */
+        .image-container {
+            width: 100%;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .section-image {
+            max-width: 100%;
+            height: auto;
+            max-height: 350px;
+            object-fit: contain;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            border: 1px solid #eee;
+            padding: 5px;
+            background-color: white;
+        }
+
+        body.dark-mode .section-image {
+            border-color: #444;
+            background-color: #333;
+        }
+
+        .image-caption {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 8px;
+            font-style: italic;
+        }
+
+        body.dark-mode .image-caption {
+            color: #aaa;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #222;
+            color: #fff;
+            padding: 25px 0;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        body.dark-mode footer {
+            background-color: #111;
+        }
+
+        .copyright {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+                padding: 10px;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+                flex-direction: column;
+                text-align: center;
+                gap: 5px;
+            }
+            
+            h2 {
+                font-size: 1.3rem;
+                display: block;
+            }
+            
+            .nav-logo {
+                font-size: 1.3rem;
+            }
+            
+            .back-btn {
+                padding: 6px 10px;
+                font-size: 0.8rem;
+            }
+            
+            .module-badge {
+                margin-left: 0;
+                margin-top: 5px;
+            }
+        }
+    </style>
+</head>
+<body>              
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="nav-logo">Digital FABLAB</a>
+            <div class="nav-buttons">
+                <a href="index.html" class="back-btn">
+                    <i class="fas fa-arrow-left"></i> Back to All Modules
+                </a>
+                <button class="dark-mode-toggle" id="darkModeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="content">
+            <h1><i class="fas fa-microchip"></i> 3-Day PCB Designing Module</h1>
+            
+            <h2><span class="day-number">1</span>PCB Designing Module - Circuit Fundamentals<span class="module-badge">PCB</span></h2>
+            <div class="image-container">
+                <img src="images/pcb3.jpg" alt="AC to DC Converter Schematic" class="section-image">
+                <div class="image-caption">Basic AC to DC converter circuit schematic design and components</div>
+            </div>
+            
+            <h3>AC to DC Converter Schematic</h3>
+            <ul>
+                <li>Designed schematic for a basic AC to DC converter circuit</li>
+                <li>Component selection and electrical specifications analysis</li>
+                <li>Circuit topology understanding and power flow concepts</li>
+                <li>Schematic symbol placement and electrical connections</li>
+            </ul>
+            
+            <h3>PCB Basics</h3>
+            <ul>
+                <li>Learned about PCB layers: substrate, copper, solder mask, and silkscreen</li>
+                <li>Understanding traces: width, spacing, and current carrying capacity</li>
+                <li>Vias: through-hole, blind, and buried via applications</li>
+                <li>Component footprints and pad design considerations</li>
+                <li>Design rules: clearances, minimum widths, and manufacturing constraints</li>
+            </ul>
+
+            <div class="circuit-section">
+                <div class="circuit-title">
+                    <i class="fas fa-presentation"></i> PPT Session
+                </div>
+                <p><strong>Real-world Applications:</strong> Discussed practical applications of PCB in various industries, best design practices for reliability and manufacturability, and industry standards for professional PCB development.</p>
+            </div>
+            
+            <hr>
+            
+            <h2><span class="day-number">2</span>PCB Designing Module - Layout Implementation<span class="module-badge">PCB</span></h2>
+            <div class="image-container">
+                <img src="images/pcb1.jpg" alt="PCB Layout Design" class="section-image">
+                <div class="image-caption">Professional PCB layout showing component placement and trace routing</div>
+            </div>
+            
+            <h3>AC to DC Converter Layout</h3>
+            <ul>
+                <li>Converted schematic to PCB layout using professional design software</li>
+                <li>Board outline creation and mechanical constraints definition</li>
+                <li>Layer stack-up planning for power and signal integrity</li>
+                <li>Netlist import and component footprint assignment</li>
+            </ul>
+            
+            <h3>Component Placement & Routing</h3>
+            <ul>
+                <li>Practiced strategic component placement for optimal performance</li>
+                <li>Manual and auto-routing techniques for efficient connections</li>
+                <li>Power and ground plane implementation strategies</li>
+                <li>Checking for DRC (Design Rule Check) errors and resolution methods</li>
+                <li>Signal integrity considerations and noise reduction techniques</li>
+            </ul>
+
+            <div class="circuit-section">
+                <div class="circuit-title">
+                    <i class="fas fa-tools"></i> Hands-on Session
+                </div>
+                <p><strong>Independent Practice:</strong> Students worked on layout tools independently under guidance, gaining practical experience with industry-standard PCB design software and real-world design challenges.</p>
+            </div>
+            
+            <hr>
+            
+            <h2><span class="day-number">3</span>PCB Designing Module - Motor Control Project<span class="module-badge">PCB</span></h2>
+            <div class="image-container">
+                <img src="images/pcb2.jpg" alt="DC Motor Speed Controller" class="section-image">
+                <div class="image-caption">DC motor speed controller circuit with PWM control and driver IC</div>
+            </div>
+            
+            <h3>DC Motor Speed Controller Schematic</h3>
+            <ul>
+                <li>Designed schematic for DC motor control circuit from concept to completion</li>
+                <li>Motor driver IC selection and integration techniques</li>
+                <li>PWM control signal routing and microcontroller interface</li>
+                <li>Protection circuits: flyback diodes and current limiting implementation</li>
+                <li>Power supply design and thermal management considerations</li>
+            </ul>
+            
+            <h3>Layout Designing</h3>
+            <ul>
+                <li>Converted schematic to physical PCB layout with strategic component placement</li>
+                <li>Routed connections considering high-current paths and signal integrity</li>
+                <li>Thermal management through copper pours and heat dissipation strategies</li>
+                <li>Manufacturing documentation preparation and final design verification</li>
+            </ul>
+
+            <div class="circuit-section">
+                <div class="circuit-title">
+                    <i class="fas fa-question-circle"></i> Discussion & Q&A Session
+                </div>
+                <p><strong>Knowledge Consolidation:</strong> Cleared doubts related to layout design principles, simulation techniques, and real-world implementation challenges. Comprehensive review covering manufacturing processes, cost optimization, and industry best practices.</p>
+            </div>
+            
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="copyright">
+                <p>&copy; 2025 Digital FABLAB. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Dark mode toggle functionality
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const body = document.body;
+        
+        // Check for saved theme preference or prefer-color-scheme
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        
+        // Apply saved theme or system preference
+        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+            body.classList.add('dark-mode');
+            darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        }
+        
+        // Toggle dark mode
+        darkModeToggle.addEventListener('click', () => {
+            if (body.classList.contains('dark-mode')) {
+                body.classList.remove('dark-mode');
+                darkModeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+                localStorage.setItem('theme', 'light');
+            } else {
+                body.classList.add('dark-mode');
+                darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+    </script>
+</body>
+</html>

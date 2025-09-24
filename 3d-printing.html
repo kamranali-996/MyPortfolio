@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Printing | Digital FABLAB</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2ecc71;
+            --text-color: #333;
+            --light-bg: #f9f9f9;
+            --dark-bg: #1a1a1a;
+            --dark-text: #f0f0f0;
+            --accent-color: #9b59b6;
+            --transition: all 0.3s ease;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --border-radius: 8px;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--light-bg);
+            margin: 0;
+            padding: 0;
+            transition: var(--transition);
+        }
+
+        body.dark-mode {
+            color: var(--dark-text);
+            background-color: var(--dark-bg);
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px 15px;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: sticky;
+            top: 0;
+            background-color: #fff;
+            box-shadow: var(--shadow);
+            z-index: 100;
+            padding: 15px 0;
+            transition: var(--transition);
+        }
+
+        body.dark-mode .navbar {
+            background-color: #222;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .nav-buttons {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 12px;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+
+        .back-btn:hover {
+            background-color: rgba(52, 152, 219, 0.1);
+        }
+
+        body.dark-mode .back-btn {
+            color: var(--dark-text);
+        }
+
+        body.dark-mode .back-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .dark-mode-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            color: var(--text-color);
+            transition: var(--transition);
+            padding: 8px;
+            border-radius: 50%;
+        }
+
+        .dark-mode-toggle:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        body.dark-mode .dark-mode-toggle {
+            color: var(--dark-text);
+        }
+
+        body.dark-mode .dark-mode-toggle:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Content Styles */
+        .content {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            margin: 20px 0 40px;
+        }
+
+        body.dark-mode .content {
+            background-color: #2a2a2a;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-size: 2rem;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        h2 {
+            color: var(--primary-color);
+            margin-top: 35px;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 10px 15px;
+            border-radius: var(--border-radius);
+            display: inline-block;
+        }
+
+        h3 {
+            color: var(--accent-color);
+            margin-top: 25px;
+            margin-bottom: 12px;
+            font-size: 1.2rem;
+        }
+
+        hr {
+            border: 0;
+            height: 1px;
+            background-color: #ddd;
+            margin: 30px 0;
+        }
+
+        body.dark-mode hr {
+            background-color: #444;
+        }
+
+        ul {
+            padding-left: 20px;
+            margin: 15px 0 25px;
+        }
+
+        li {
+            margin-bottom: 8px;
+            position: relative;
+            padding-left: 10px;
+            line-height: 1.5;
+        }
+
+        li:before {
+            content: '•';
+            color: var(--secondary-color);
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        /* Image Section */
+        .image-container {
+            width: 100%;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .section-image {
+            max-width: 100%;
+            height: auto;
+            max-height: 350px;
+            object-fit: contain;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            border: 1px solid #eee;
+            padding: 5px;
+            background-color: white;
+        }
+
+        body.dark-mode .section-image {
+            border-color: #444;
+            background-color: #333;
+        }
+
+        .image-caption {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 8px;
+            font-style: italic;
+        }
+
+        body.dark-mode .image-caption {
+            color: #aaa;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #222;
+            color: #fff;
+            padding: 25px 0;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        body.dark-mode footer {
+            background-color: #111;
+        }
+
+        .copyright {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+                padding: 10px;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            h2 {
+                font-size: 1.3rem;
+                display: block;
+            }
+            
+            .nav-logo {
+                font-size: 1.3rem;
+            }
+            
+            .back-btn {
+                padding: 6px 10px;
+                font-size: 0.8rem;
+            }
+            .back-btn:hover {
+                background-color: #2980b9;
+            }
+        }
+    </style>
+</head>
+<body>              
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="nav-logo">Digital FABLAB</a>
+            <div class="nav-buttons">
+                <a href="index.html" class="back-btn">
+                    <i class="fas fa-arrow-left"></i> Back to All Modules
+                </a>
+                <button class="dark-mode-toggle" id="darkModeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="content">
+            <h1>5-Day 3D Printing Course</h1>
+            
+            <h2>DAY 1: INTRODUCTION TO 3D PRINTING</h2>
+            <div class="image-container">
+                <video class="section-image" controls>
+                <source src="images/printingvideo (1).mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+            </video>
+                <div class="image-caption">Basic 3D printer setup and components overview</div>
+            </div>
+            
+            <h3>What is 3D Printing?</h3>
+            <ul>
+                <li>Understanding how 3D printers work</li>
+                <li>Different types of 3D printers (FDM, SLA, SLS)</li>
+                <li>Basic parts of a 3D printer</li>
+                <li>What can you make with 3D printing?</li>
+                <li>Safety basics when using 3D printers</li>
+            </ul>
+            
+            <hr>
+            
+            <h2>DAY 2: MATERIALS AND FILAMENTS</h2>
+            <div class="image-container">
+                <img src="images/3dprintingdetails.jpeg" alt="3D Printer in Operation" class="section-image">
+                <div class="image-caption">Different 3D printing materials and their properties</div>
+            </div>
+            
+            <h3>Common 3D Printing Materials</h3>
+            <ul>
+                <li>PLA - Easy to use, biodegradable plastic</li>
+                <li>ABS - Strong, durable plastic</li>
+                <li>PETG - Clear, chemical resistant</li>
+                <li>TPU - Flexible rubber-like material</li>
+                <li>How to choose the right material for your project</li>
+                <li>Storing filaments properly</li>
+            </ul>
+            
+            <hr>
+            
+            <h2>DAY 3: DESIGN BASICS AND SOFTWARE</h2>
+            <div class="image-container">
+                <video class="section-image" controls>
+                    <source src="images/makingvideo (1).mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <div class="image-caption">3D design software demonstration and basic modeling</div>
+            </div>
+            
+            <h3>Creating 3D Models</h3>
+            <ul>
+                <li>Free 3D design software (Tinkercad, Fusion 360)</li>
+                <li>Basic 3D modeling concepts</li>
+                <li>Downloading models from Thingiverse</li>
+                <li>Design rules for successful printing</li>
+                <li>File formats (STL, OBJ)</li>
+            </ul>
+            
+            <hr>
+            
+            <h2>DAY 4: PRINTER SETUP AND PRINTING PROCESS</h2>
+            <div class="image-container">
+                <img src="images/day2printing.jpeg" alt="3D Printer in Operation" class="section-image">
+                <div class="image-caption">3D printer creating objects layer by layer</div>
+            </div>
+            
+            <h3>Getting Ready to Print</h3>
+            <ul>
+                <li>Setting up your 3D printer</li>
+                <li>Leveling the print bed</li>
+                <li>Loading filament correctly</li>
+                <li>Using slicing software (Cura, PrusaSlicer)</li>
+                <li>Basic print settings (layer height, speed, temperature)</li>
+                <li>Starting your first print</li>
+            </ul>
+            
+            <hr>
+            
+            <h2>DAY 5: TROUBLESHOOTING AND FINISHING</h2>
+            <div class="image-container">
+                <img src="images/day4printing.jpeg" alt="3D Printer in Operation" class="section-image">
+                <div class="image-caption">Post-processing techniques and common problem solutions</div>
+            </div>
+            
+            <h3>Problem Solving and Finishing</h3>
+            <ul>
+                <li>Common printing problems and how to fix them</li>
+                <li>Layer adhesion issues</li>
+                <li>Stringing and oozing solutions</li>
+                <li>Removing supports and cleaning prints</li>
+                <li>Sanding and painting 3D prints</li>
+                <li>Maintenance tips for your printer</li>
+                <li>Next steps in your 3D printing journey</li>
+            </ul>
+            
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="copyright">
+                <p>&copy; 2025 Digital FABLAB. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Dark mode toggle functionality
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const body = document.body;
+        
+        // Check for saved theme preference or prefer-color-scheme
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        
+        // Apply saved theme or system preference
+        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+            body.classList.add('dark-mode');
+            darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        }
+        
+        // Toggle dark mode
+        darkModeToggle.addEventListener('click', () => {
+            if (body.classList.contains('dark-mode')) {
+                body.classList.remove('dark-mode');
+                darkModeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+                localStorage.setItem('theme', 'light');
+            } else {
+                body.classList.add('dark-mode');
+                darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+    </script>
+</body>
+</html>

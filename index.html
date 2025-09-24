@@ -1,0 +1,1432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital FABLAB Portfolio</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00d4ff;
+            --secondary: #7c3aed;
+            --tertiary: #f59e0b;
+            --accent: #ef4444;
+            --dark: #0f0f23;
+            --darker: #0a0a1a;
+            --light: #ffffff;
+            --glass: rgba(255, 255, 255, 0.1);
+            --glass-dark: rgba(0, 0, 0, 0.2);
+            --glow: 0 0 20px rgba(0, 212, 255, 0.5);
+            --glow-purple: 0 0 20px rgba(124, 58, 237, 0.5);
+            --shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            --gradient-primary: linear-gradient(135deg, #00d4ff 0%, #7c3aed 50%, #f59e0b 100%);
+            --gradient-card: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+            --gradient-text: linear-gradient(90deg, #00d4ff, #7c3aed, #f59e0b);
+            --border-glow: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.8), transparent);
+        }
+
+        .dark-mode {
+            --dark: #ffffff;
+            --light: #0f0f23;
+            --glass: rgba(0, 0, 0, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--darker);
+            color: var(--light);
+            line-height: 1.6;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: var(--darker);
+        }
+
+        .floating-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .shape {
+            position: absolute;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            opacity: 0.1;
+            animation: float 20s infinite linear;
+        }
+
+        .shape:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .shape:nth-child(2) {
+            width: 120px;
+            height: 120px;
+            left: 80%;
+            animation-delay: -5s;
+        }
+
+        .shape:nth-child(3) {
+            width: 60px;
+            height: 60px;
+            left: 50%;
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); }
+            100% { transform: translateY(-100px) rotate(360deg); }
+        }
+
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            backdrop-filter: blur(20px);
+            background: rgba(15, 15, 35, 0.8);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .nav-logo {
+            font-weight: 800;
+            font-size: 1.8rem;
+            background: var(--gradient-text);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-decoration: none;
+            position: relative;
+        }
+
+        .nav-logo::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--gradient-primary);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .nav-logo:hover::after {
+            transform: scaleX(1);
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--light);
+            font-weight: 500;
+            position: relative;
+            padding: 0.5rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-primary);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .nav-link:hover::before {
+            width: 100%;
+        }
+
+        .dark-mode-toggle {
+            background: var(--glass);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--light);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0.8rem;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .dark-mode-toggle:hover {
+            box-shadow: var(--glow);
+            transform: scale(1.1);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            padding-top: 80px;
+        }
+
+        .hero-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 2rem;
+            background: var(--gradient-text);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: textGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes textGlow {
+            0% { filter: drop-shadow(0 0 5px rgba(0, 212, 255, 0.5)); }
+            100% { filter: drop-shadow(0 0 20px rgba(124, 58, 237, 0.8)); }
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 3rem;
+            line-height: 1.6;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: var(--light);
+            box-shadow: var(--glow);
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.8);
+        }
+
+        .btn-secondary {
+            background: var(--glass);
+            color: var(--light);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+            box-shadow: var(--glow-purple);
+        }
+
+        .hero-visual {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero-image {
+            width: 100%;
+            max-width: 500px;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            transform: perspective(1000px) rotateY(-10deg) rotateX(5deg);
+            transition: all 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(0, 212, 255, 0.3), rgba(124, 58, 237, 0.3));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .hero-image:hover {
+            transform: perspective(1000px) rotateY(0deg) rotateX(0deg) scale(1.05);
+            box-shadow: 0 0 50px rgba(0, 212, 255, 0.5);
+        }
+
+        .hero-image:hover::before {
+            opacity: 1;
+        }
+
+        /* Section Styles */
+        .section {
+            padding: 8rem 0;
+            position: relative;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 6rem;
+        }
+
+        .section-title {
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            background: var(--gradient-text);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--gradient-primary);
+            border-radius: 2px;
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* 3D Module Cards */
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 3rem;
+            margin-top: 4rem;
+            perspective: 1000px;
+        }
+
+        .module-card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 0;
+            transition: all 0.5s ease;
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+
+        .module-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--border-glow);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+
+        .module-card:hover {
+            transform: translateY(-10px) rotateX(5deg);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .module-card:hover::before {
+            opacity: 1;
+        }
+
+        .module-header {
+            padding: 3rem 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .module-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: block;
+            text-align: center;
+            filter: drop-shadow(0 0 10px rgba(0, 212, 255, 0.5));
+            transition: all 0.3s ease;
+            transform-style: preserve-3d;
+        }
+
+        .module-card:hover .module-icon {
+            transform: scale(1.2) rotateY(360deg);
+            filter: drop-shadow(0 0 20px rgba(124, 58, 237, 0.8));
+        }
+
+        .module-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-align: center;
+            color: var(--light);
+            margin-bottom: 1rem;
+        }
+
+        .module-content {
+            padding: 0 2rem 2rem;
+            text-align: center;
+        }
+
+        .module-description {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .module-btn {
+            background: var(--gradient-primary);
+            color: var(--light);
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .module-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.3s ease;
+        }
+
+        .module-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .module-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(0, 212, 255, 0.5);
+        }
+
+        /* Specific Module Colors */
+        .module-web { --module-color: #00d4ff; }
+        .module-cad { --module-color: #7c3aed; }
+        .module-3d { --module-color: #f59e0b; }
+        .module-laser { --module-color: #ef4444; }
+        .module-embedded { --module-color: #10b981; }
+        .module-pcb { --module-color: #f97316; }
+        .module-iot { --module-color: #ec4899; }
+        .module-java { --module-color: #ef4444; }
+        .module-network { --module-color: #6b7280; }
+        .module-ai { --module-color: #14b8a6; }
+
+        .module-card[class*="module-"]:hover {
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3), 0 0 30px var(--module-color);
+        }
+
+        /* About Section */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 4rem;
+            align-items: center;
+            margin-top: 4rem;
+        }
+
+        .profile-card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+        }
+
+        .profile-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 40px rgba(0, 212, 255, 0.3);
+        }
+
+        .profile-header {
+            padding: 3rem 2rem;
+            background: var(--gradient-primary);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: rotate 10s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .profile-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            margin: 0 auto 1.5rem;
+            object-fit: cover;
+            position: relative;
+            z-index: 2;
+            transition: all 0.3s ease;
+        }
+
+        .profile-img:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+        }
+
+        .about-content {
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.8;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .skill-tag {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 0.8rem 1rem;
+            border-radius: 50px;
+            text-align: center;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .skill-tag:hover {
+            background: var(--gradient-primary);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 212, 255, 0.3);
+        }
+
+        /* Projects Section */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 3rem;
+            margin-top: 4rem;
+        }
+
+        .project-card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: all 0.5s ease;
+            position: relative;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: var(--gradient-primary);
+            transition: left 0.5s ease;
+        }
+
+        .project-card:hover::before {
+            left: 100%;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3), 0 0 30px rgba(0, 212, 255, 0.3);
+        }
+
+        .project-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: all 0.3s ease;
+        }
+
+        .project-card:hover .project-image {
+            transform: scale(1.1);
+        }
+
+        .project-content {
+            padding: 2rem;
+        }
+
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .project-tag {
+            background: rgba(0, 212, 255, 0.2);
+            color: var(--primary);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        /* Contact Form */
+        .contact-form {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 3rem;
+            max-width: 600px;
+            margin: 0 auto;
+            box-shadow: var(--shadow);
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            color: var(--light);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            padding: 4rem 0 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--light);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .social-icon::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.3s ease;
+            z-index: -1;
+        }
+
+        .social-icon:hover::before {
+            width: 100%;
+            height: 100%;
+        }
+
+        .social-icon:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--glow);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero-container {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 2rem;
+            }
+
+            .nav-menu {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .about-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .modules-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+        }
+
+        /* Animation Classes */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .slide-in-left {
+            opacity: 0;
+            transform: translateX(-50px);
+            animation: slideInLeft 0.8s ease forwards;
+        }
+
+        @keyframes slideInLeft {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .slide-in-right {
+            opacity: 0;
+            transform: translateX(50px);
+            animation: slideInRight 0.8s ease forwards;
+        }
+
+        @keyframes slideInRight {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .scale-in {
+            opacity: 0;
+            transform: scale(0.8);
+            animation: scaleIn 0.8s ease forwards;
+        }
+
+        @keyframes scaleIn {
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Delay classes */
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+        .delay-5 { animation-delay: 0.5s; }
+        .delay-6 { animation-delay: 0.6s; }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="bg-animation">
+        <div class="floating-shapes">
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+        </div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="nav-logo">Digital FABLAB</a>
+            <div class="nav-menu">
+                <a href="#home" class="nav-link">Home</a>
+                <a href="#about" class="nav-link">About</a>
+                <a href="#projects" class="nav-link">Projects</a>
+                <a href="#modules" class="nav-link">Modules</a>
+                <a href="#contact" class="nav-link">Contact</a>
+                <button class="dark-mode-toggle" id="darkModeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1 class="hero-title slide-in-left">
+                    Digital <br>
+                    <span style="background: linear-gradient(45deg, #00d4ff, #7c3aed); -webkit-background-clip: text; background-clip: text; color: transparent;">FABLAB</span> <br>
+                    Portfolio
+                </h1>
+                <p class="hero-subtitle slide-in-left delay-1">
+                    From imagination to innovation - fabricate your ideas using cutting-edge digital fabrication technologies and modern web solutions.
+                </p>
+                <div class="hero-buttons slide-in-left delay-2">
+                    <a href="#modules" class="btn btn-primary">
+                        <i class="fas fa-rocket"></i>
+                        Explore Modules
+                    </a>
+                    <a href="#contact" class="btn btn-secondary">
+                        <i class="fas fa-paper-plane"></i>
+                        Get In Touch
+                    </a>
+                </div>
+            </div>
+            <div class="hero-visual slide-in-right">
+                <img src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Digital Fabrication" class="hero-image">
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title fade-in-up">About Me</h2>
+                <p class="section-subtitle fade-in-up delay-1">Learn about my journey, skills, and passion for digital fabrication technologies</p>
+            </div>
+            <div class="about-grid">
+                <div class="profile-card scale-in delay-2">
+                    <div class="profile-header">
+                        <img src="myimage2.jpeg" alt="Kamran Ali Yusuf Ali" class="profile-img">
+                        <h3 class="profile-name">Kamran Ali Yusuf Ali</h3>
+                        <p class="profile-title">Digital Fabrication Student</p>
+                    </div>
+                    <div class="profile-content" style="padding: 2rem;">
+                        <div class="profile-info" style="margin-bottom: 2rem;">
+                            <div class="profile-item" style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; color: rgba(255,255,255,0.9);">
+                                <i class="fas fa-envelope" style="color: var(--primary); width: 20px;"></i>
+                                <span>kamranaliali996@gmail.com</span>
+                            </div>
+                            <div class="profile-item" style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; color: rgba(255,255,255,0.9);">
+                                <i class="fas fa-map-marker-alt" style="color: var(--primary); width: 20px;"></i>
+                                <span>SSGMCE Shegaon</span>
+                            </div>
+                            <div class="profile-item" style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; color: rgba(255,255,255,0.9);">
+                                <i class="fas fa-graduation-cap" style="color: var(--primary); width: 20px;"></i>
+                                <span>B.E. Information Technology</span>
+                            </div>
+                        </div>
+                        <div class="social-icons">
+                            <a href="https://kamranali-996.github.io/portfolio/" class="social-icon" target="_blank"><i class="fab fa-github"></i></a>
+                            <a href="https://www.linkedin.com/in/kamran-ali-74061232a" class="social-icon" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="https://www.instagram.com/kame_ali_18" class="social-icon" target="_blank"><i class="fab fa-instagram"></i></a>
+                            <a href="mailto:kamranaliali996@gmail.com" class="social-icon"><i class="fas fa-envelope"></i></a>
+                        </div>
+                        <div style="margin-top: 2rem;">
+                            <a href="my_resume.pdf" class="btn btn-primary" download="Kamran_Ali_Resume.pdf" style="width: 100%; justify-content: center;">
+                                <i class="fas fa-download"></i>
+                                Download Resume
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-content slide-in-right delay-3">
+                    <h3 style="font-size: 2rem; margin-bottom: 1.5rem; background: var(--gradient-text); -webkit-background-clip: text; background-clip: text; color: transparent;">
+                        Designing the Future
+                    </h3>
+                    <p style="margin-bottom: 1.5rem; color: rgba(255,255,255,0.9); line-height: 1.8;">
+                        I'm currently enrolled in the Digital FABLAB program, exploring various technology domains to build a strong foundation in digital fabrication and innovative technologies. I'm passionate about creating solutions that bridge the digital and physical worlds.
+                    </p>
+                    <p style="margin-bottom: 2rem; color: rgba(255,255,255,0.9); line-height: 1.8;">
+                        With a focus on both practical skills and theoretical knowledge, I aim to develop expertise across multiple disciplines including web development, CAD design, 3D printing, embedded systems, and more. My goal is to combine these skills to create innovative solutions for real-world problems.
+                    </p>
+                    <div class="skills-grid">
+                        <div class="skill-tag">HTML/CSS</div>
+                        <div class="skill-tag">JavaScript</div>
+                        <div class="skill-tag">3D Modeling</div>
+                        <div class="skill-tag">PCB Design</div>
+                        <div class="skill-tag">IoT Systems</div>
+                        <div class="skill-tag">CAD Design</div>
+                        <div class="skill-tag">Electronics</div>
+                        <div class="skill-tag">Laser Cutting</div>
+                        <div class="skill-tag">CNC Machining</div>
+                        <div class="skill-tag">3D Printing</div>
+                        <div class="skill-tag">Embedded Systems</div>
+                        <div class="skill-tag">Arduino</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title fade-in-up">My Projects</h2>
+                <p class="section-subtitle fade-in-up delay-1">Showcasing my work in digital fabrication and technology</p>
+            </div>
+            <div class="projects-grid">
+                <div class="project-card scale-in delay-2">
+                    <img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Portfolio Website" class="project-image">
+                    <div class="project-content">
+                        <h3 style="font-size: 1.4rem; margin-bottom: 1rem; color: var(--light); font-weight: 700;">Portfolio Website</h3>
+                        <p style="color: rgba(255,255,255,0.8); margin-bottom: 1.5rem; line-height: 1.6;">A responsive portfolio website built with HTML, CSS, and JavaScript to showcase my projects and skills.</p>
+                        <div class="project-tags">
+                            <span class="project-tag">HTML/CSS</span>
+                            <span class="project-tag">JavaScript</span>
+                            <span class="project-tag">Responsive Design</span>
+                        </div>
+                        <a href="#" class="module-btn" style="margin-top: 1rem;">Learn More</a>
+                    </div>
+                </div>
+
+                <div class="project-card scale-in delay-3">
+                    <img src="https://images.unsplash.com/photo-1639762681057-408e52192e55?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="OpenAI Chatbot" class="project-image">
+                    <div class="project-content">
+                        <h3 style="font-size: 1.4rem; margin-bottom: 1rem; color: var(--light); font-weight: 700;">OpenAI Chatbot</h3>
+                        <p style="color: rgba(255,255,255,0.8); margin-bottom: 1.5rem; line-height: 1.6;">Built an AI-powered chatbot as part of a NxtWave workshop, exploring LLMs, OpenAI, and LangChain. This project introduced me to practical applications of Large Language Models.</p>
+                        <div class="project-tags">
+                            <span class="project-tag">OpenAI API</span>
+                            <span class="project-tag">LangChain</span>
+                            <span class="project-tag">Python</span>
+                        </div>
+                        <a href="#" class="module-btn" style="margin-top: 1rem;">Learn More</a>
+                    </div>
+                </div>
+
+                <div class="project-card scale-in delay-4">
+                    <img src="https://images.unsplash.com/photo-1581094271901-8022df4466f9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="AI Educational Platform" class="project-image">
+                    <div class="project-content">
+                        <h3 style="font-size: 1.4rem; margin-bottom: 1rem; color: var(--light); font-weight: 700;">AI-Powered Educational Platform</h3>
+                        <p style="color: rgba(255,255,255,0.8); margin-bottom: 1.5rem; line-height: 1.6;">Created a website for underprivileged children with AI-powered flashcards during the Innovo Hackathon. Combined web development with practical AI application.</p>
+                        <div class="project-tags">
+                            <span class="project-tag">Web Development</span>
+                            <span class="project-tag">AI Integration</span>
+                            <span class="project-tag">Social Impact</span>
+                        </div>
+                        <a href="#" class="module-btn" style="margin-top: 1rem;">Learn More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modules Section -->
+    <section id="modules" class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title fade-in-up">All Modules</h2>
+                <p class="section-subtitle fade-in-up delay-1">Explore cutting-edge digital fabrication technologies</p>
+            </div>
+            <div class="modules-grid">
+                <!-- Web Development -->
+                <div class="module-card module-web scale-in delay-2">
+                    <div class="module-header">
+                        <i class="fas fa-code module-icon"></i>
+                        <h3 class="module-title">Web Development</h3>
+                    </div>
+                    <div class="module-content">
+                        <p class="module-description">Build responsive, modern websites using HTML5, CSS3, JavaScript, and cutting-edge frameworks.</p>
+                        <a href="web-development.html" class="module-btn">Explore Module</a>
+                    </div>
+                </div>
+
+                <!-- CAD Design -->
+                <div class="module-card module-cad scale-in delay-3">
+                    <div class="module-header">
+                        <i class="fas fa-drafting-compass module-icon"></i>
+                        <h3 class="module-title">CAD Design</h3>
+                    </div>
+                    <div class="module-content">
+                        <p class="module-description">Master 2D/3D modeling with professional computer-aided design software and parametric modeling.</p>
+                        <a href="cad-design.html" class="module-btn">Explore Module</a>
+                    </div>
+                </div>
+
+                <!-- 3D Printing -->
+                <div class="module-card module-3d scale-in delay-4">
+                    <div class="module-header">
+                        <i class="fas fa-cube module-icon"></i>
+                        <h3 class="module-title">3D Printing</h3>
+                    </div>
+                    <div class="module-content">
+                        <p class="module-description">Learn additive manufacturing techniques, materials science, and rapid prototyping methods.</p>
+                        <a href="3d-printing.html" class="module-btn">Explore Module</a>
+                    </div>
+                </div>
+
+                <!-- Laser Cutting -->
+                <div class="module-card module-laser scale-in delay-5">
+                    <div class="module-header">
+                        <i class="fas fa-cut module-icon"></i>
+                        <h3 class="module-title">Laser Cutting</h3>
+                    </div>
+                    <div class="module-content">
+                        <p class="module-description">Master precision cutting and engraving with laser technology for various materials.</p>
+                        <a href="lasercutting.html" class="module-btn">Explore Module</a>
+                    </div>
+                </div>
+
+                <!-- Embedded Systems -->
+                <div class="module-card module-embedded scale-in delay-6">
+                    <div class="module-header">
+                        <i class="fas fa-microchip module-icon"></i>
+                        <h3 class="module-title">Embedded Systems</h3>
+                    </div>
+                    <div class="module-content">
+                        <p class="module-description">Program microcontrollers, sensors, and build intelligent embedded solutions.</p>
+                        <a href="embedded-systems.html" class="module-btn">Explore Module</a>
+                    </div>
+                </div>
+
+                <!-- PCB Design -->
+                <div class="module-card module-pcb scale-in delay-2">
+                    <div class="module-header">
+                        <i class="fas fa-project-diagram module-icon"></i>
+                        <h3 class="module-title">PCB Design</h3>
+                    </div>
+                    <div class="module-content">
+                        <p class="module-description">Design professional printed circuit boards for custom electronics projects.</p>
+                        <a href="pcb-design.html" class="module-btn">Explore Module</a>
+                    </div>
+                </div>
+
+                <!-- IoT -->
+                <div class="module-card module-iot scale-in delay-3">
+                    <div class="module-header">
+                        <i class="fas fa-wifi module-icon"></i>
+                        <h3 class="module-title">Internet of Things</h3>
+                    </div>
+                    <div class="module-content">
+                        <p class="module-description">Connect devices to the cloud and build smart, interconnected systems.</p>
+                        <a href="iot.html" class="module-btn">Explore Module</a>
+                    </div>
+                </div>
+
+                <!-- Java Programming -->
+                <div class="module-card module-java scale-in delay-4">
+                    <div class="module-header">
+                        <i class="fab fa-java module-icon"></i>
+                        <h3 class="module-title">Java Programming</h3>
+                    </div>
+                    <div class="module-content">
+                        <p class="module-description">Master object-oriented programming with Java and build robust applications.</p>
+                        <a href="java-programming.html" class="module-btn">Explore Module</a>
+                    </div>
+                </div>
+
+                <!-- Networking -->
+                <div class="module-card module-network scale-in delay-5">
+                    <div class="module-header">
+                        <i class="fas fa-network-wired module-icon"></i>
+                        <h3 class="module-title">Networking</h3>
+                    </div>
+                    <div class="module-content">
+                        <p class="module-description">Understand computer networks, protocols, and modern communication systems.</p>
+                        <a href="networking.html" class="module-btn">Explore Module</a>
+                    </div>
+                </div>
+
+                <!-- AI/ML -->
+                <div class="module-card module-ai scale-in delay-6">
+                    <div class="module-header">
+                        <i class="fas fa-robot module-icon"></i>
+                        <h3 class="module-title">AI/ML</h3>
+                    </div>
+                    <div class="module-content">
+                        <p class="module-description">Dive into artificial intelligence and machine learning fundamentals.</p>
+                        <a href="ai-ml.html" class="module-btn">Explore Module</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title fade-in-up">Let's Connect</h2>
+                <p class="section-subtitle fade-in-up delay-1">Have a question or want to work together? Reach out to me!</p>
+            </div>
+            <form id="contactForm" class="contact-form scale-in delay-2">
+                <div class="form-group">
+                    <label for="name" style="display: block; margin-bottom: 0.5rem; color: var(--light); font-weight: 500;">Name</label>
+                    <input type="text" id="name" class="form-control" placeholder="Your Name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email" style="display: block; margin-bottom: 0.5rem; color: var(--light); font-weight: 500;">Email</label>
+                    <input type="email" id="email" class="form-control" placeholder="Your Email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="subject" style="display: block; margin-bottom: 0.5rem; color: var(--light); font-weight: 500;">Subject</label>
+                    <input type="text" id="subject" class="form-control" placeholder="Subject" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="message" style="display: block; margin-bottom: 0.5rem; color: var(--light); font-weight: 500;">Message</label>
+                    <textarea id="message" class="form-control" placeholder="Your Message" style="min-height: 150px; resize: vertical;" required></textarea>
+                </div>
+                
+                <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                    <i class="fas fa-paper-plane"></i>
+                    Send Message
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <div style="font-size: 1.8rem; font-weight: 700; margin-bottom: 1rem; background: var(--gradient-text); -webkit-background-clip: text; background-clip: text; color: transparent;">Digital FABLAB</div>
+                    <p style="color: rgba(255,255,255,0.7); max-width: 300px; margin-bottom: 1.5rem; line-height: 1.6;">
+                        My portfolio showcasing projects and skills developed through the Digital Fabrication Laboratory program.
+                    </p>
+                    <div class="social-icons">
+                        <a href="https://kamranali-996.github.io/portfolio/" class="social-icon" target="_blank"><i class="fab fa-github"></i></a>
+                        <a href="https://www.linkedin.com/in/kamran-ali-74061232a" class="social-icon" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="https://www.instagram.com/kame_ali_18" class="social-icon" target="_blank"><i class="fab fa-instagram"></i></a>
+                        <a href="mailto:kamranaliali996@gmail.com" class="social-icon"><i class="fas fa-envelope"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h4 style="font-size: 1.2rem; margin-bottom: 1.5rem; color: var(--light); position: relative; padding-bottom: 0.5rem;">Quick Links</h4>
+                    <ul style="list-style: none;">
+                        <li style="margin-bottom: 0.8rem;"><a href="#home" style="color: rgba(255,255,255,0.7); text-decoration: none; transition: all 0.3s ease;">Home</a></li>
+                        <li style="margin-bottom: 0.8rem;"><a href="#about" style="color: rgba(255,255,255,0.7); text-decoration: none; transition: all 0.3s ease;">About</a></li>
+                        <li style="margin-bottom: 0.8rem;"><a href="#projects" style="color: rgba(255,255,255,0.7); text-decoration: none; transition: all 0.3s ease;">Projects</a></li>
+                        <li style="margin-bottom: 0.8rem;"><a href="#modules" style="color: rgba(255,255,255,0.7); text-decoration: none; transition: all 0.3s ease;">Modules</a></li>
+                        <li style="margin-bottom: 0.8rem;"><a href="#contact" style="color: rgba(255,255,255,0.7); text-decoration: none; transition: all 0.3s ease;">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="font-size: 1.2rem; margin-bottom: 1.5rem; color: var(--light);">Featured Modules</h4>
+                    <ul style="list-style: none;">
+                        <li style="margin-bottom: 0.8rem;"><a href="web-development.html" style="color: rgba(255,255,255,0.7); text-decoration: none; transition: all 0.3s ease;">Web Development</a></li>
+                        <li style="margin-bottom: 0.8rem;"><a href="cad-design.html" style="color: rgba(255,255,255,0.7); text-decoration: none; transition: all 0.3s ease;">CAD Design</a></li>
+                        <li style="margin-bottom: 0.8rem;"><a href="3d-printing.html" style="color: rgba(255,255,255,0.7); text-decoration: none; transition: all 0.3s ease;">3D Printing</a></li>
+                        <li style="margin-bottom: 0.8rem;"><a href="embedded-systems.html" style="color: rgba(255,255,255,0.7); text-decoration: none; transition: all 0.3s ease;">Embedded Systems</a></li>
+                        <li style="margin-bottom: 0.8rem;"><a href="iot.html" style="color: rgba(255,255,255,0.7); text-decoration: none; transition: all 0.3s ease;">IoT</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="font-size: 1.2rem; margin-bottom: 1.5rem; color: var(--light);">Resources</h4>
+                    <ul style="list-style: none;">
+                        <li style="margin-bottom: 0.8rem;"><a href="#" style="color: rgba(255,255,255,0.7); text-decoration: none; transition: all 0.3s ease;">FabLab Documentation</a></li>
+                        <li style="margin-bottom: 0.8rem;"><a href="#" style="color: rgba(255,255,255,0.7); text-decoration: none; transition: all 0.3s ease;">Learning Materials</a></li>
+                        <li style="margin-bottom: 0.8rem;"><a href="#" style="color: rgba(255,255,255,0.7); text-decoration: none; transition: all 0.3s ease;">Project Gallery</a></li>
+                        <li style="margin-bottom: 0.8rem;"><a href="#" style="color: rgba(255,255,255,0.7); text-decoration: none; transition: all 0.3s ease;">Useful Tools</a></li>
+                        <li style="margin-bottom: 0.8rem;"><a href="my_resume.pdf" style="color: rgba(255,255,255,0.7); text-decoration: none; transition: all 0.3s ease;" download>My Resume</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div style="text-align: center; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.9rem; color: rgba(255,255,255,0.7);">
+                <p>&copy; 2025 Digital FABLAB Portfolio. Crafted with passion by Kamran Ali.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Dark mode toggle
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const body = document.body;
+
+        if (localStorage.getItem('darkMode') === 'enabled') {
+            body.classList.add('dark-mode');
+            darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        }
+
+        darkModeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            
+            if (body.classList.contains('dark-mode')) {
+                localStorage.setItem('darkMode', 'enabled');
+                darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            } else {
+                localStorage.setItem('darkMode', 'disabled');
+                darkModeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+            }
+        });
+
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.style.background = 'rgba(15, 15, 35, 0.95)';
+                navbar.style.backdropFilter = 'blur(25px)';
+            } else {
+                navbar.style.background = 'rgba(15, 15, 35, 0.8)';
+                navbar.style.backdropFilter = 'blur(20px)';
+            }
+        });
+
+        // Contact form handling
+        const contactForm = document.getElementById('contactForm');
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form values
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const subject = document.getElementById('subject').value;
+            const message = document.getElementById('message').value;
+            
+            // Simple validation
+            if (name && email && subject && message) {
+                // Here you would typically send the form data to a server
+                alert('Thank you for your message! I will get back to you soon.');
+                contactForm.reset();
+            } else {
+                alert('Please fill in all fields.');
+            }
+        });
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all animated elements
+        document.querySelectorAll('.fade-in-up, .slide-in-left, .slide-in-right, .scale-in').forEach(el => {
+            el.style.animationPlayState = 'paused';
+            observer.observe(el);
+        });
+
+        // Add hover effects to module cards
+        document.querySelectorAll('.module-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-15px) rotateX(10deg) rotateY(5deg)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) rotateX(0) rotateY(0)';
+            });
+        });
+
+        // Parallax effect for floating shapes
+        window.addEventListener('scroll', function() {
+            const scrolled = window.pageYOffset;
+            const shapes = document.querySelectorAll('.shape');
+            
+            shapes.forEach((shape, index) => {
+                const speed = (index + 1) * 0.5;
+                shape.style.transform = `translateY(${scrolled * speed}px)`;
+            });
+        });
+
+        // Add typing effect to hero title
+        function typeWriter(element, text, speed = 100) {
+            let i = 0;
+            element.innerHTML = '';
+            
+            function type() {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                }
+            }
+            
+            type();
+        }
+
+        // Initialize typing effect when page loads
+        window.addEventListener('load', function() {
+            const heroTitle = document.querySelector('.hero-title');
+            if (heroTitle) {
+                setTimeout(() => {
+                    typeWriter(heroTitle, 'Digital FABLAB Portfolio', 100);
+                }, 500);
+            }
+        });
+    </script>
+</body>
+</html>

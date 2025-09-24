@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CAD Design | Digital FABLAB</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2ecc71;
+            --text-color: #333;
+            --light-bg: #f9f9f9;
+            --dark-bg: #1a1a1a;
+            --dark-text: #f0f0f0;
+            --accent-color: #9b59b6;
+            --transition: all 0.3s ease;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --border-radius: 8px;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--light-bg);
+            margin: 0;
+            padding: 0;
+            transition: var(--transition);
+        }
+
+        body.dark-mode {
+            color: var(--dark-text);
+            background-color: var(--dark-bg);
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px 15px;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: sticky;
+            top: 0;
+            background-color: #fff;
+            box-shadow: var(--shadow);
+            z-index: 100;
+            padding: 15px 0;
+            transition: var(--transition);
+        }
+
+        body.dark-mode .navbar {
+            background-color: #222;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .nav-buttons {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 12px;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+
+        .back-btn:hover {
+            background-color: rgba(52, 152, 219, 0.1);
+        }
+
+        body.dark-mode .back-btn {
+            color: var(--dark-text);
+        }
+
+        body.dark-mode .back-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .dark-mode-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            color: var(--text-color);
+            transition: var(--transition);
+            padding: 8px;
+            border-radius: 50%;
+        }
+
+        .dark-mode-toggle:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        body.dark-mode .dark-mode-toggle {
+            color: var(--dark-text);
+        }
+
+        body.dark-mode .dark-mode-toggle:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Content Styles */
+        .content {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            margin: 20px 0 40px;
+        }
+
+        body.dark-mode .content {
+            background-color: #2a2a2a;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-size: 2rem;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        h2 {
+            color: var(--primary-color);
+            margin-top: 35px;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 10px 15px;
+            border-radius: var(--border-radius);
+            display: inline-block;
+        }
+
+        h3 {
+            color: var(--accent-color);
+            margin-top: 25px;
+            margin-bottom: 12px;
+            font-size: 1.2rem;
+        }
+
+        hr {
+            border: 0;
+            height: 1px;
+            background-color: #ddd;
+            margin: 30px 0;
+        }
+
+        body.dark-mode hr {
+            background-color: #444;
+        }
+
+        ul {
+            padding-left: 20px;
+            margin: 15px 0 25px;
+        }
+
+        li {
+            margin-bottom: 8px;
+            position: relative;
+            padding-left: 10px;
+            line-height: 1.5;
+        }
+
+        li:before {
+            content: '•';
+            color: var(--secondary-color);
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        /* Image Section */
+        .image-container {
+            width: 100%;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .section-image {
+            max-width: 100%;
+            height: auto;
+            max-height: 350px;
+            object-fit: contain;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            border: 1px solid #eee;
+            padding: 5px;
+            background-color: white;
+        }
+
+        body.dark-mode .section-image {
+            border-color: #444;
+            background-color: #333;
+        }
+
+        .image-caption {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 8px;
+            font-style: italic;
+        }
+
+        body.dark-mode .image-caption {
+            color: #aaa;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #222;
+            color: #fff;
+            padding: 25px 0;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        body.dark-mode footer {
+            background-color: #111;
+        }
+
+        .copyright {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+                padding: 10px;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            h2 {
+                font-size: 1.3rem;
+                display: block;
+            }
+            
+            .nav-logo {
+                font-size: 1.3rem;
+            }
+            
+            .back-btn {
+                padding: 6px 10px;
+                font-size: 0.8rem;
+            }
+            .back-btn:hover {
+                background-color: #2980b9;
+            }
+        }
+    </style>
+</head>
+<body>              
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="nav-logo">Digital FABLAB</a>
+            <div class="nav-buttons">
+                <a href="index.html" class="back-btn">
+                    <i class="fas fa-arrow-left"></i> Back to All Modules
+                </a>
+                <button class="dark-mode-toggle" id="darkModeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="content">
+            <h1>Computer Aided Design (CAD) Course</h1>
+            
+            <h2>DAY 1: 2D CHARACTER DESIGN</h2>
+            <div class="image-container">
+                <img src="images/pikachuface.png" alt="Pikachu Face Design in Fusion 360" class="section-image">
+                <div class="image-caption">Pikachu face keychain design created using 2D sketching tools</div>
+            </div>
+            
+            <h3>Creative 2D Sketching</h3>
+            <ul>
+                <li>Understanding Fusion 360 interface</li>
+                <li>2D sketch tools for character design</li>
+                <li>Creating basic shapes & curves</li>
+                <li>Color application & design finishing</li>
+            </ul>
+            
+            <hr>
+            
+            <h2>DAY 2: GEOMETRIC MODELING</h2>
+            <div class="image-container">
+                <img src="images/circlering.png" alt="Circular Ring Design" class="section-image">
+                <div class="image-caption">Precision circular ring design with exact dimensions and measurements</div>
+            </div>
+            
+            <h3>Precision Geometry</h3>
+            <ul>
+                <li>Creating perfect circles & rings</li>
+                <li>Dimensional constraints & parameters</li>
+                <li>Geometric relationships</li>
+                <li>Technical drawing standards</li>
+            </ul>
+            
+            <hr>
+            
+           <h2>DAY 3: ADVANCED CAD TECHNIQUES</h2>
+           <div class="image-container">
+                <video class="section-image" controls>
+                <source src="images/examplevideo.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+            </video>
+            <div class="image-caption">
+                    Comprehensive tutorial demonstrating advanced CAD modeling techniques
+            </div>
+            </div>
+
+            
+            <h3>Professional Workflows</h3>
+            <ul>
+                <li>Advanced modeling commands</li>
+                <li>Feature-based design approach</li>
+                <li>Design modification strategies</li>
+                <li>Best practices & efficiency tips</li>
+            </ul>
+            
+            <hr>
+            
+            <h2>DAY 4: 3D MECHANICAL DESIGN</h2>
+            <div class="image-container">
+                <img src="images/motormaking.png" alt="3D Motor Assembly" class="section-image">
+                <div class="image-caption">Complex 3D motor assembly showing multiple components and detailed engineering</div>
+            </div>
+            
+            <h3>Complex 3D Modeling</h3>
+            <ul>
+                <li>Multi-component assemblies</li>
+                <li>Mechanical part design principles</li>
+                <li>Component relationships & joints</li>
+                <li>Engineering design considerations</li>
+            </ul>
+            
+            <hr>
+            
+            <h2>DAY 5: PROJECT IMPLEMENTATION</h2>
+            <div class="image-container">
+                 <video class="section-image" controls>
+                <source src="images/finalproject.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+            </video>
+                <div class="image-caption">Complete project walkthrough from concept to final CAD model</div>
+            </div>
+            
+            <h3>End-to-End Design Process</h3>
+            <ul>
+                <li>Project planning & concept development</li>
+                <li>Design iteration & refinement</li>
+                <li>Final model completion</li>
+                <li>Presentation & documentation</li>
+            </ul>
+            
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="copyright">
+                <p>&copy; 2025 Digital FABLAB. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Dark mode toggle functionality
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const body = document.body;
+        
+        // Check for saved theme preference or prefer-color-scheme
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        
+        // Apply saved theme or system preference
+        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+            body.classList.add('dark-mode');
+            darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        }
+        
+        // Toggle dark mode
+        darkModeToggle.addEventListener('click', () => {
+            if (body.classList.contains('dark-mode')) {
+                body.classList.remove('dark-mode');
+                darkModeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+                localStorage.setItem('theme', 'light');
+            } else {
+                body.classList.add('dark-mode');
+                darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+    </script>
+</body>
+</html>
