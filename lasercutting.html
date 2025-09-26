@@ -5,332 +5,597 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Laser Cutting | Digital FABLAB</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #e74c3c;
-            --secondary-color: #f39c12;
-            --text-color: #333;
-            --light-bg: #f9f9f9;
-            --dark-bg: #1a1a1a;
-            --dark-text: #f0f0f0;
-            --accent-color: #9b59b6;
-            --transition: all 0.3s ease;
-            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            --border-radius: 8px;
+            --primary: #00d4ff;
+            --secondary: #7c3aed;
+            --tertiary: #f59e0b;
+            --accent: #ef4444;
+            --dark: #0f0f23;
+            --darker: #0a0a1a;
+            --light: #ffffff;
+            --glass: rgba(255, 255, 255, 0.1);
+            --glass-dark: rgba(0, 0, 0, 0.2);
+            --glow: 0 0 20px rgba(0, 212, 255, 0.5);
+            --glow-purple: 0 0 20px rgba(124, 58, 237, 0.5);
+            --shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            --gradient-primary: linear-gradient(135deg, #00d4ff 0%, #7c3aed 50%, #f59e0b 100%);
+            --gradient-card: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+            --gradient-text: linear-gradient(90deg, #00d4ff, #7c3aed, #f59e0b);
+            --border-glow: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.8), transparent);
+        }
+
+        .dark-mode {
+            --dark: #ffffff;
+            --light: #0f0f23;
+            --glass: rgba(0, 0, 0, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', sans-serif;
+            background: var(--darker);
+            color: var(--light);
             line-height: 1.6;
-            color: var(--text-color);
-            background-color: var(--light-bg);
-            margin: 0;
-            padding: 0;
-            transition: var(--transition);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
         }
 
-        body.dark-mode {
-            color: var(--dark-text);
-            background-color: var(--dark-bg);
-        }
-
-        .container {
-            width: 90%;
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 20px 15px;
-        }
-
-        /* Navigation */
-        .navbar {
-            position: sticky;
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
             top: 0;
-            background-color: #fff;
-            box-shadow: var(--shadow);
-            z-index: 100;
-            padding: 15px 0;
-            transition: var(--transition);
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: var(--darker);
         }
 
-        body.dark-mode .navbar {
-            background-color: #222;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        .floating-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .shape {
+            position: absolute;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            opacity: 0.1;
+            animation: float 20s infinite linear;
+        }
+
+        .shape:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .shape:nth-child(2) {
+            width: 120px;
+            height: 120px;
+            left: 80%;
+            animation-delay: -5s;
+        }
+
+        .shape:nth-child(3) {
+            width: 60px;
+            height: 60px;
+            left: 50%;
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); }
+            100% { transform: translateY(-100px) rotate(360deg); }
+        }
+
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            backdrop-filter: blur(20px);
+            background: rgba(15, 15, 35, 0.8);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            padding: 1rem 0;
         }
 
         .nav-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
         }
 
         .nav-logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--primary-color);
+            font-weight: 800;
+            font-size: 1.8rem;
+            background: var(--gradient-text);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
             text-decoration: none;
-            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-logo::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--gradient-primary);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .nav-logo:hover::after {
+            transform: scaleX(1);
         }
 
         .nav-buttons {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 1.5rem;
         }
 
         .back-btn {
             display: flex;
             align-items: center;
-            gap: 5px;
-            color: var(--primary-color);
+            gap: 0.5rem;
+            color: var(--light);
             text-decoration: none;
             font-weight: 500;
-            padding: 8px 12px;
-            border-radius: var(--border-radius);
-            transition: var(--transition);
-            font-size: 0.9rem;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .back-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.3s ease;
+            z-index: -1;
+        }
+
+        .back-btn:hover::before {
+            width: 300px;
+            height: 300px;
         }
 
         .back-btn:hover {
-            background-color: rgba(231, 76, 60, 0.1);
-        }
-
-        body.dark-mode .back-btn {
-            color: var(--dark-text);
-        }
-
-        body.dark-mode .back-btn:hover {
-            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+            box-shadow: var(--glow);
         }
 
         .dark-mode-toggle {
-            background: none;
-            border: none;
+            background: var(--glass);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--light);
+            font-size: 1.2rem;
             cursor: pointer;
-            font-size: 1.1rem;
-            color: var(--text-color);
-            transition: var(--transition);
-            padding: 8px;
+            padding: 0.8rem;
             border-radius: 50%;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
         }
 
         .dark-mode-toggle:hover {
-            background-color: rgba(0, 0, 0, 0.05);
+            box-shadow: var(--glow);
+            transform: scale(1.1);
         }
 
-        body.dark-mode .dark-mode-toggle {
-            color: var(--dark-text);
+        /* Main Content */
+        .main-content {
+            padding-top: 120px;
+            min-height: 100vh;
         }
 
-        body.dark-mode .dark-mode-toggle:hover {
-            background-color: rgba(255, 255, 255, 0.1);
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
         }
 
-        /* Content Styles */
-        .content {
-            background-color: #fff;
-            padding: 30px;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-            margin: 20px 0 40px;
+        .page-header {
+            text-align: center;
+            margin-bottom: 4rem;
+            position: relative;
         }
 
-        body.dark-mode .content {
-            background-color: #2a2a2a;
-        }
-
-        h1 {
-            color: var(--primary-color);
-            font-size: 2rem;
-            margin-bottom: 25px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid var(--primary-color);
+        .page-title {
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            background: var(--gradient-text);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            position: relative;
+            animation: textGlow 3s ease-in-out infinite alternate;
             display: flex;
             align-items: center;
-            gap: 10px;
+            justify-content: center;
+            gap: 1rem;
         }
 
-        h2 {
-            color: var(--primary-color);
-            margin-top: 35px;
-            margin-bottom: 15px;
-            font-size: 1.4rem;
-            background-color: rgba(231, 76, 60, 0.1);
-            padding: 10px 15px;
-            border-radius: var(--border-radius);
-            display: inline-block;
+        @keyframes textGlow {
+            0% { filter: drop-shadow(0 0 5px rgba(0, 212, 255, 0.5)); }
+            100% { filter: drop-shadow(0 0 20px rgba(124, 58, 237, 0.8)); }
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Day Cards */
+        .days-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 3rem;
+            margin-top: 4rem;
+        }
+
+        .day-card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: all 0.5s ease;
             position: relative;
+        }
+
+        .day-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: var(--gradient-primary);
+            transition: left 0.5s ease;
+        }
+
+        .day-card:hover::before {
+            left: 100%;
+        }
+
+        .day-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3), 0 0 30px rgba(124, 58, 237, 0.3);
+        }
+
+        .day-header {
+            padding: 2rem;
+            background: var(--gradient-primary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .day-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: rotate 10s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         .day-number {
-            background: var(--primary-color);
-            color: white;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            margin-right: 10px;
-            font-size: 0.9rem;
-        }
-
-        h3 {
-            color: var(--accent-color);
-            margin-top: 25px;
-            margin-bottom: 12px;
-            font-size: 1.2rem;
-        }
-
-        hr {
-            border: 0;
-            height: 2px;
-            background: linear-gradient(to right, transparent, var(--primary-color), transparent);
-            margin: 30px 0;
-        }
-
-        body.dark-mode hr {
-            background: linear-gradient(to right, transparent, #666, transparent);
-        }
-
-        ul {
-            padding-left: 20px;
-            margin: 15px 0 25px;
-        }
-
-        li {
-            margin-bottom: 8px;
+            font-size: 3rem;
+            font-weight: 800;
+            color: rgba(255, 255, 255, 0.9);
+            text-align: center;
             position: relative;
-            padding-left: 10px;
-            line-height: 1.5;
+            z-index: 2;
+            margin-bottom: 1rem;
         }
 
-        li:before {
-            content: '▶';
-            color: var(--secondary-color);
-            font-weight: bold;
-            margin-right: 10px;
-            font-size: 0.8rem;
+        .day-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--light);
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        /* Activity Sections */
-        .activity-section {
-            background: linear-gradient(135deg, var(--secondary-color), #e67e22);
-            color: white;
-            padding: 15px 20px;
-            border-radius: var(--border-radius);
-            margin: 20px 0;
+        .day-content {
+            padding: 2rem;
+        }
+
+        .media-container {
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px;
+            background: var(--glass);
+            padding: 1rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .section-media {
+            width: 100%;
+            height: auto;
+            max-height: 280px;
+            object-fit: contain;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            position: relative;
+            display: block;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .media-container::before {
+            content: '';
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            right: 1rem;
+            bottom: 1rem;
+            background: linear-gradient(45deg, rgba(0, 212, 255, 0.1), rgba(124, 58, 237, 0.1));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border-radius: 15px;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .day-card:hover .media-container::before {
+            opacity: 1;
+        }
+
+        .day-card:hover .section-media {
+            transform: scale(1.02);
+        }
+
+        .media-caption {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 0.8rem;
+            font-style: italic;
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        .topics-section {
+            margin-top: 1.5rem;
+        }
+
+        .topics-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 1rem;
             display: flex;
             align-items: center;
-            gap: 10px;
-            box-shadow: var(--shadow);
+            gap: 0.5rem;
         }
 
-        .activity-icon {
-            font-size: 1.2rem;
-            min-width: 24px;
+        .topics-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .topics-list li {
+            padding: 0.8rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            padding-left: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .topics-list li::before {
+            content: '▶';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .topics-list li:hover {
+            padding-left: 2.5rem;
+            color: var(--primary);
+        }
+
+        .topics-list li:hover::before {
+            color: var(--tertiary);
+            transform: scale(1.2);
+        }
+
+        .topics-list li:last-child {
+            border-bottom: none;
+        }
+
+        /* Activity Section */
+        .activity-section {
+            margin-top: 1.5rem;
+            background: var(--gradient-primary);
+            border-radius: 15px;
+            padding: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .activity-section::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: var(--gradient-primary);
+            z-index: -1;
+            border-radius: 15px;
         }
 
         .activity-content {
-            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: white;
+            font-weight: 600;
+            position: relative;
+            z-index: 2;
         }
 
-        /* Image Section */
-        .image-container {
-            width: 100%;
-            margin: 20px 0;
-            text-align: center;
-        }
-
-        .section-image {
-            max-width: 100%;
-            height: auto;
-            max-height: 350px;
-            object-fit: contain;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            border: 1px solid #eee;
-            padding: 5px;
-            background-color: white;
-        }
-
-        body.dark-mode .section-image {
-            border-color: #444;
-            background-color: #333;
-        }
-
-        .image-caption {
-            font-size: 0.9rem;
-            color: #666;
-            margin-top: 8px;
-            font-style: italic;
-        }
-
-        body.dark-mode .image-caption {
-            color: #aaa;
+        .activity-icon {
+            font-size: 1.5rem;
+            min-width: 24px;
         }
 
         /* Footer */
         footer {
-            background-color: #222;
-            color: #fff;
-            padding: 25px 0;
-            text-align: center;
-            margin-top: 40px;
-        }
-
-        body.dark-mode footer {
-            background-color: #111;
+            background: var(--dark);
+            padding: 3rem 0 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 6rem;
         }
 
         .copyright {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
             font-size: 0.9rem;
-            opacity: 0.8;
         }
 
+        /* Responsive Design */
         @media (max-width: 768px) {
-            .container {
-                width: 95%;
-                padding: 10px;
+            .nav-container {
+                padding: 0 1rem;
             }
-            
-            .content {
-                padding: 20px;
-            }
-            
-            h1 {
-                font-size: 1.8rem;
-                flex-direction: column;
-                text-align: center;
-                gap: 5px;
-            }
-            
-            h2 {
-                font-size: 1.3rem;
-                display: block;
-            }
-            
+
             .nav-logo {
-                font-size: 1.3rem;
+                font-size: 1.5rem;
             }
-            
+
+            .nav-buttons {
+                gap: 1rem;
+            }
+
             .back-btn {
-                padding: 6px 10px;
-                font-size: 0.8rem;
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
             }
-            
-            .activity-section {
+
+            .container {
+                padding: 0 1rem;
+            }
+
+            .days-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .day-content {
+                padding: 1.5rem;
+            }
+
+            .main-content {
+                padding-top: 100px;
+            }
+
+            .section-media {
+                max-height: 220px;
+            }
+
+            .page-title {
                 flex-direction: column;
-                text-align: center;
-                gap: 5px;
+                gap: 0.5rem;
             }
         }
+
+        /* Animation Classes */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .scale-in {
+            opacity: 0;
+            transform: scale(0.8);
+            animation: scaleIn 0.8s ease forwards;
+        }
+
+        @keyframes scaleIn {
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Delay classes */
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+        .delay-5 { animation-delay: 0.5s; }
+        .delay-6 { animation-delay: 0.6s; }
+        .delay-7 { animation-delay: 0.7s; }
     </style>
 </head>
-<body>              
+<body>
+    <!-- Animated Background -->
+    <div class="bg-animation">
+        <div class="floating-shapes">
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+        </div>
+    </div>
+
+    <!-- Navbar -->
     <nav class="navbar">
-        <div class="container nav-container">
+        <div class="nav-container">
             <a href="index.html" class="nav-logo">Digital FABLAB</a>
             <div class="nav-buttons">
                 <a href="index.html" class="back-btn">
@@ -343,254 +608,247 @@
         </div>
     </nav>
 
-    <div class="container">
-        <div class="content">
-            <h1><i class="fas fa-cut"></i> 7-Day Learning Journey of Laser Cutting</h1>
-            
-            <h2><span class="day-number">1</span>Intro & Applications</h2>
-            <div class="image-container">
-                <img src="images/lasercut1.jpg" alt="Laser Cutter in Operation" class="section-image">
-                <div class="image-caption">Professional CO2 laser cutter processing materials with precision</div>
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Page Header -->
+            <div class="page-header fade-in-up">
+                <h1 class="page-title">
+                    <i class="fas fa-cut"></i>
+                    Laser Cutting Mastery
+                </h1>
+                <p class="page-subtitle">Precision manufacturing through laser technology - from concept to creation with professional cutting and engraving techniques</p>
             </div>
-            
-            <h3>What is laser cutting?</h3>
-            <ul>
-                <li>Thermal cutting process using focused laser beam</li>
-                <li>Computer-controlled precision manufacturing</li>
-                <li>Non-contact material processing method</li>
-                <li>Versatile tool for prototyping and production</li>
-            </ul>
-            
-            <h3>Types of lasers</h3>
-            <ul>
-                <li><strong>CO2 Lasers:</strong> Wood, acrylic, leather, paper, fabric</li>
-                <li><strong>Fiber Lasers:</strong> Metals, some plastics, high precision</li>
-                <li><strong>Diode Lasers:</strong> Light engraving, hobby applications</li>
-            </ul>
-            
-            <h3>Safety basics</h3>
-            <ul>
-                <li>Eye protection and laser safety glasses</li>
-                <li>Proper ventilation and fume extraction</li>
-                <li>Fire safety protocols and emergency procedures</li>
-                <li>Material safety data sheets (MSDS) knowledge</li>
-            </ul>
 
-            <div class="activity-section">
-                <div class="activity-icon">✅</div>
-                <div class="activity-content">Activity: List 5 laser-cut items you encounter daily</div>
-            </div>
-            
-            <hr>
-            
-            <h2><span class="day-number">2</span>Hardware & Software</h2>
-            <div class="image-container">
-                <img src="images/lasercut2.jpg" alt="Laser Cutting Software Interface" class="section-image">
-                <div class="image-caption">Professional laser cutting software showing vector design and cutting parameters</div>
-            </div>
-            
-            <h3>Laser cutter components</h3>
-            <ul>
-                <li><strong>Laser tube:</strong> CO2 gas mixture generates laser beam</li>
-                <li><strong>Cutting bed:</strong> Honeycomb or slat support system</li>
-                <li><strong>Exhaust system:</strong> Fume extraction and filtration</li>
-                <li><strong>Control electronics:</strong> Motion control and laser power</li>
-                <li><strong>Cooling system:</strong> Water cooling for laser tube</li>
-            </ul>
-            
-            <h3>Software: LaserCAD & alternatives</h3>
-            <ul>
-                <li>Industry standard LaserCAD software versions</li>
-                <li>Alternative software: LightBurn, RDWorks, K40 Whisperer</li>
-                <li>CAD integration with AutoCAD, Illustrator, Inkscape</li>
-                <li>File import/export capabilities and compatibility</li>
-            </ul>
-            
-            <h3>Vector vs Raster & file types</h3>
-            <ul>
-                <li><strong>Vector (.svg, .dxf):</strong> Cutting lines, precise scalable graphics</li>
-                <li><strong>Raster (.png, .jpg):</strong> Engraving, photographic reproduction</li>
-                <li>File preparation and optimization techniques</li>
-                <li>Color coding for different operations</li>
-            </ul>
+            <!-- Days Grid -->
+            <div class="days-grid">
+                <!-- Day 1 -->
+                <div class="day-card scale-in delay-1">
+                    <div class="day-header">
+                        <div class="day-number">01</div>
+                        <h2 class="day-title">Intro & Applications</h2>
+                    </div>
+                    <div class="day-content">
+                        <div class="media-container">
+                            <img src="images/lasercut1.jpg" alt="Laser Cutter in Operation" class="section-media">
+                            <div class="media-caption">Professional CO2 laser cutter processing materials with precision</div>
+                        </div>
+                        <div class="topics-section">
+                            <h3 class="topics-title">
+                                <i class="fas fa-laser"></i>
+                                Laser Cutting Fundamentals
+                            </h3>
+                            <ul class="topics-list">
+                                <li>Thermal cutting process using focused laser beam</li>
+                                <li>Computer-controlled precision manufacturing</li>
+                                <li>Non-contact material processing method</li>
+                                <li>CO2 vs Fiber vs Diode laser types and applications</li>
+                                <li>Eye protection and comprehensive safety protocols</li>
+                            </ul>
+                        </div>
+                        <div class="activity-section">
+                            <div class="activity-content">
+                                <div class="activity-icon">✅</div>
+                                <div>Activity: List 5 laser-cut items you encounter daily</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-            <div class="activity-section">
-                <div class="activity-icon">✅</div>
-                <div class="activity-content">Activity: Design a basic geometric shape in vector software</div>
-            </div>
-            
-            <hr>
-            
-            <h2><span class="day-number">3</span>Design Basics</h2>
-            <div class="image-container">
-                <img src="images/lasercut3.jpeg" alt="Laser Cut Design Examples" class="section-image">
-                <div class="image-caption">Various laser cut wooden products showing cut and engrave techniques</div>
-            </div>
-            
-            <h3>Cut vs engrave setup</h3>
-            <ul>
-                <li><strong>Cutting:</strong> Full power, optimal speed, complete material penetration</li>
-                <li><strong>Engraving:</strong> Variable power, controlled depth, surface marking</li>
-                <li>Layer management and operation sequencing</li>
-                <li>Color coding system for different functions</li>
-            </ul>
-            
-            <h3>Design tips for press fit</h3>
-            <ul>
-                <li>Kerf width compensation for tight joints</li>
-                <li>Material thickness variations and tolerances</li>
-                <li>Joint design: tabs, slots, living hinges</li>
-                <li>Assembly sequence planning</li>
-            </ul>
+                <!-- Day 2 -->
+                <div class="day-card scale-in delay-2">
+                    <div class="day-header">
+                        <div class="day-number">02</div>
+                        <h2 class="day-title">Hardware & Software</h2>
+                    </div>
+                    <div class="day-content">
+                        <div class="media-container">
+                            <img src="images/lasercut2.jpg" alt="Laser Cutting Software Interface" class="section-media">
+                            <div class="media-caption">Professional laser cutting software showing vector design and cutting parameters</div>
+                        </div>
+                        <div class="topics-section">
+                            <h3 class="topics-title">
+                                <i class="fas fa-microchip"></i>
+                                System Components
+                            </h3>
+                            <ul class="topics-list">
+                                <li>Laser tube, cutting bed, and exhaust system components</li>
+                                <li>Control electronics and cooling system integration</li>
+                                <li>LaserCAD software and alternative platforms</li>
+                                <li>Vector vs Raster processing and file formats</li>
+                                <li>CAD integration with design software</li>
+                            </ul>
+                        </div>
+                        <div class="activity-section">
+                            <div class="activity-content">
+                                <div class="activity-icon">✅</div>
+                                <div>Activity: Design a basic geometric shape in vector software</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-            <div class="activity-section">
-                <div class="activity-icon">✅</div>
-                <div class="activity-content">Activity: Design a small box with engraving decoration</div>
-            </div>
-            
-            <hr>
-            
-            <h2><span class="day-number">4</span>Materials & Settings</h2>
-            <div class="image-container">
-                <img src="images/lasercut4.jpeg" alt="Laser Cut Design Examples" class="section-image">
-                <div class="image-caption">Various laser cut wooden products showing cut and engrave techniques</div>
-            </div>
-            
-            <h3>Materials compatibility</h3>
-            <ul>
-                <li><strong>Wood:</strong> Plywood, MDF, hardwoods (various thicknesses)</li>
-                <li><strong>Acrylic types:</strong> Cast vs extruded, clear vs colored</li>
-                <li><strong>Paper & cardboard:</strong> Prototyping, templates, packaging</li>
-                <li><strong>Other materials:</strong> Leather, fabric, foam, some plastics</li>
-            </ul>
-            
-            <h3>Power/speed settings optimization</h3>
-            <ul>
-                <li>Power percentage vs material thickness relationship</li>
-                <li>Speed settings for quality vs efficiency balance</li>
-                <li>Multiple pass techniques for thick materials</li>
-                <li>PPI (Pulses Per Inch) for engraving quality</li>
-            </ul>
-            
-            <h3>Testing procedures</h3>
-            <ul>
-                <li>Speed/power test grids and matrices</li>
-                <li>Material sample testing protocols</li>
-                <li>Quality assessment criteria</li>
-                <li>Parameter documentation and library building</li>
-            </ul>
+                <!-- Day 3 -->
+                <div class="day-card scale-in delay-3">
+                    <div class="day-header">
+                        <div class="day-number">03</div>
+                        <h2 class="day-title">Design Basics</h2>
+                    </div>
+                    <div class="day-content">
+                        <div class="media-container">
+                            <img src="images/lasercut3.jpeg" alt="Laser Cut Design Examples" class="section-media">
+                            <div class="media-caption">Various laser cut wooden products showing cut and engrave techniques</div>
+                        </div>
+                        <div class="topics-section">
+                            <h3 class="topics-title">
+                                <i class="fas fa-drafting-compass"></i>
+                                Design Principles
+                            </h3>
+                            <ul class="topics-list">
+                                <li>Cut vs engrave operation setup and optimization</li>
+                                <li>Layer management and color coding systems</li>
+                                <li>Kerf width compensation for precision joints</li>
+                                <li>Press fit design and assembly considerations</li>
+                                <li>Joint design: tabs, slots, and living hinges</li>
+                            </ul>
+                        </div>
+                        <div class="activity-section">
+                            <div class="activity-content">
+                                <div class="activity-icon">✅</div>
+                                <div>Activity: Design a small box with engraving decoration</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-            <div class="activity-section">
-                <div class="activity-icon">✅</div>
-                <div class="activity-content">Activity: Run a speed/power test grid on cardboard</div>
-            </div>
-            
-            <hr>
-            
-            <h2><span class="day-number">5</span>Operating the Laser</h2>
-            
-            <h3>Machine setup procedures</h3>
-            <ul>
-                <li><strong>Focusing:</strong> Laser beam focus adjustment for material thickness</li>
-                <li><strong>Bed setup:</strong> Material positioning and securing</li>
-                <li><strong>Air assist:</strong> Compressed air for clean cuts and fire prevention</li>
-                <li><strong>Exhaust system:</strong> Proper ventilation and fume extraction</li>
-            </ul>
-            
-            <h3>File processing & job execution</h3>
-            <ul>
-                <li>Sending design files to laser cutter</li>
-                <li>Job queue management and batch processing</li>
-                <li>Preview functions and cut path verification</li>
-                <li>Real-time monitoring during operation</li>
-            </ul>
-            
-            <h3>Safety checks & emergency procedures</h3>
-            <ul>
-                <li>Pre-operation safety checklist</li>
-                <li>Emergency stop button locations and procedures</li>
-                <li>Fire suppression systems and protocols</li>
-                <li>Personal protective equipment (PPE) requirements</li>
-            </ul>
+                <!-- Day 4 -->
+                <div class="day-card scale-in delay-4">
+                    <div class="day-header">
+                        <div class="day-number">04</div>
+                        <h2 class="day-title">Materials & Settings</h2>
+                    </div>
+                    <div class="day-content">
+                        <div class="media-container">
+                            <img src="images/lasercut4.jpeg" alt="Material Testing Results" class="section-media">
+                            <div class="media-caption">Various laser cut wooden products showing cut and engrave techniques</div>
+                        </div>
+                        <div class="topics-section">
+                            <h3 class="topics-title">
+                                <i class="fas fa-layer-group"></i>
+                                Material Science
+                            </h3>
+                            <ul class="topics-list">
+                                <li>Wood, acrylic, paper, and specialty material compatibility</li>
+                                <li>Power/speed optimization for material thickness</li>
+                                <li>Multiple pass techniques and quality settings</li>
+                                <li>Speed/power test grids and documentation</li>
+                                <li>Parameter library building and optimization</li>
+                            </ul>
+                        </div>
+                        <div class="activity-section">
+                            <div class="activity-content">
+                                <div class="activity-icon">✅</div>
+                                <div>Activity: Run a speed/power test grid on cardboard</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-            <div class="activity-section">
-                <div class="activity-icon">✅</div>
-                <div class="activity-content">Activity: Cut your first real design from concept to completion</div>
-            </div>
-            
-            <hr>
-            
-            <h2><span class="day-number">6</span>Project Day</h2>
-            
-            <h3>Project planning & execution</h3>
-            <ul>
-                <li><strong>Useful projects:</strong> Phone stands, storage boxes, 3D assemblies</li>
-                <li>Design complexity progression and skill building</li>
-                <li>Functional vs decorative design considerations</li>
-                <li>Time management and project scope planning</li>
-            </ul>
-            
-            <h3>File preparation & optimization</h3>
-            <ul>
-                <li>Design finalization and technical review</li>
-                <li>Nesting layouts for material efficiency</li>
-                <li>Cut order optimization for quality and speed</li>
-                <li>Backup plans and design alternatives</li>
-            </ul>
-            
-            <h3>Assembly & finishing</h3>
-            <ul>
-                <li>Component organization and identification</li>
-                <li>Assembly sequence and joint fitting</li>
-                <li>Post-processing: sanding, gluing, finishing</li>
-                <li>Quality control and final inspection</li>
-            </ul>
+                <!-- Day 5 -->
+                <div class="day-card scale-in delay-5">
+                    <div class="day-header">
+                        <div class="day-number">05</div>
+                        <h2 class="day-title">Operating the Laser</h2>
+                    </div>
+                    <div class="day-content">
+                        <div class="topics-section">
+                            <h3 class="topics-title">
+                                <i class="fas fa-cogs"></i>
+                                Machine Operations
+                            </h3>
+                            <ul class="topics-list">
+                                <li>Laser beam focus adjustment and bed setup</li>
+                                <li>Air assist and exhaust system configuration</li>
+                                <li>File processing and job queue management</li>
+                                <li>Real-time monitoring and quality control</li>
+                                <li>Emergency procedures and safety protocols</li>
+                            </ul>
+                        </div>
+                        <div class="activity-section">
+                            <div class="activity-content">
+                                <div class="activity-icon">✅</div>
+                                <div>Activity: Cut your first real design from concept to completion</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-            <div class="activity-section">
-                <div class="activity-icon">✅</div>
-                <div class="activity-content">Activity: Complete & document your project with photos and notes</div>
-            </div>
-            
-            <hr>
-            
-            <h2><span class="day-number">7</span>Review & Maintenance</h2>
-            
-            <h3>Common issues & troubleshooting</h3>
-            <ul>
-                <li><strong>Burn marks:</strong> Excessive power, slow speed, poor ventilation</li>
-                <li><strong>Incomplete cuts:</strong> Low power, fast speed, focus issues</li>
-                <li>Edge quality problems and surface finishing</li>
-                <li>Dimensional accuracy and kerf compensation</li>
-            </ul>
-            
-            <h3>Basic maintenance procedures</h3>
-            <ul>
-                <li><strong>Lens cleaning:</strong> Proper techniques and cleaning materials</li>
-                <li><strong>Mirror alignment:</strong> Beam path optimization</li>
-                <li>Cutting bed maintenance and honeycomb cleaning</li>
-                <li>Exhaust system filter replacement and maintenance</li>
-            </ul>
-            
-            <h3>Project showcase & reflection</h3>
-            <ul>
-                <li>Documentation methods: photos, videos, process notes</li>
-                <li>Portfolio development and presentation skills</li>
-                <li>Peer review and constructive feedback</li>
-                <li>Future learning paths and advanced techniques</li>
-            </ul>
+                <!-- Day 6 -->
+                <div class="day-card scale-in delay-6">
+                    <div class="day-header">
+                        <div class="day-number">06</div>
+                        <h2 class="day-title">Project Day</h2>
+                    </div>
+                    <div class="day-content">
+                        <div class="topics-section">
+                            <h3 class="topics-title">
+                                <i class="fas fa-project-diagram"></i>
+                                Project Execution
+                            </h3>
+                            <ul class="topics-list">
+                                <li>Useful projects: phone stands, storage boxes, assemblies</li>
+                                <li>Design complexity progression and skill building</li>
+                                <li>Nesting layouts for material efficiency</li>
+                                <li>Assembly sequence and joint fitting techniques</li>
+                                <li>Post-processing: sanding, finishing, quality control</li>
+                            </ul>
+                        </div>
+                        <div class="activity-section">
+                            <div class="activity-content">
+                                <div class="activity-icon">✅</div>
+                                <div>Activity: Complete & document your project with photos and notes</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-            <div class="activity-section">
-                <div class="activity-icon">✅</div>
-                <div class="activity-content">Activity: Present final work & reflect on learning journey</div>
+                <!-- Day 7 -->
+                <div class="day-card scale-in delay-7">
+                    <div class="day-header">
+                        <div class="day-number">07</div>
+                        <h2 class="day-title">Review & Maintenance</h2>
+                    </div>
+                    <div class="day-content">
+                        <div class="topics-section">
+                            <h3 class="topics-title">
+                                <i class="fas fa-tools"></i>
+                                Professional Finishing
+                            </h3>
+                            <ul class="topics-list">
+                                <li>Troubleshooting: burn marks, incomplete cuts, quality issues</li>
+                                <li>Lens cleaning and mirror alignment procedures</li>
+                                <li>Cutting bed and exhaust system maintenance</li>
+                                <li>Project documentation and portfolio development</li>
+                                <li>Advanced techniques and future learning paths</li>
+                            </ul>
+                        </div>
+                        <div class="activity-section">
+                            <div class="activity-content">
+                                <div class="activity-icon">✅</div>
+                                <div>Activity: Present final work & reflect on learning journey</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            
         </div>
-    </div>
+    </main>
 
+    <!-- Footer -->
     <footer>
         <div class="container">
             <div class="copyright">
-                <p>&copy; 2025 Digital FABLAB. All rights reserved.</p>
+                <p>&copy; 2025 Digital FABLAB Portfolio. Crafted with passion by Kamran Ali.</p>
             </div>
         </div>
     </footer>
@@ -600,26 +858,67 @@
         const darkModeToggle = document.getElementById('darkModeToggle');
         const body = document.body;
         
-        // Check for saved theme preference or prefer-color-scheme
-        const savedTheme = localStorage.getItem('theme');
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        
-        // Apply saved theme or system preference
-        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+        // Check for saved theme preference
+        if (localStorage.getItem('darkMode') === 'enabled') {
             body.classList.add('dark-mode');
             darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
         }
         
         // Toggle dark mode
         darkModeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            
             if (body.classList.contains('dark-mode')) {
-                body.classList.remove('dark-mode');
-                darkModeToggle.innerHTML = '<i class="fas fa-moon"></i>';
-                localStorage.setItem('theme', 'light');
-            } else {
-                body.classList.add('dark-mode');
+                localStorage.setItem('darkMode', 'enabled');
                 darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-                localStorage.setItem('theme', 'dark');
+            } else {
+                localStorage.setItem('darkMode', 'disabled');
+                darkModeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+            }
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add scroll animation to elements
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all animated elements
+        document.querySelectorAll('.fade-in-up, .scale-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 100) {
+                navbar.style.background = 'rgba(15, 15, 35, 0.95)';
+                navbar.style.backdropFilter = 'blur(20px)';
+            } else {
+                navbar.style.background = 'rgba(15, 15, 35, 0.8)';
+                navbar.style.backdropFilter = 'blur(20px)';
             }
         });
     </script>
