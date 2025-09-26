@@ -3,62 +3,1036 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Networking Module | Digital FABLAB</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Networking Mastery | Digital FABLAB</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <!-- Same head content -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00d4ff;
+            --secondary: #7c3aed;
+            --tertiary: #f59e0b;
+            --accent: #ef4444;
+            --dark: #0f0f23;
+            --darker: #0a0a1a;
+            --light: #ffffff;
+            --glass: rgba(255, 255, 255, 0.1);
+            --glass-dark: rgba(0, 0, 0, 0.2);
+            --glow: 0 0 20px rgba(0, 212, 255, 0.5);
+            --glow-purple: 0 0 20px rgba(124, 58, 237, 0.5);
+            --shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            --gradient-primary: linear-gradient(135deg, #00d4ff 0%, #7c3aed 50%, #f59e0b 100%);
+            --gradient-card: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+            --gradient-text: linear-gradient(90deg, #00d4ff, #7c3aed, #f59e0b);
+            --border-glow: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.8), transparent);
+        }
+
+        .dark-mode {
+            --dark: #ffffff;
+            --light: #0f0f23;
+            --glass: rgba(0, 0, 0, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--darker);
+            color: var(--light);
+            line-height: 1.6;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: var(--darker);
+        }
+
+        .floating-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .shape {
+            position: absolute;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            opacity: 0.1;
+            animation: float 20s infinite linear;
+        }
+
+        .shape:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .shape:nth-child(2) {
+            width: 120px;
+            height: 120px;
+            left: 80%;
+            animation-delay: -5s;
+        }
+
+        .shape:nth-child(3) {
+            width: 60px;
+            height: 60px;
+            left: 50%;
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); }
+            100% { transform: translateY(-100px) rotate(360deg); }
+        }
+
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            backdrop-filter: blur(20px);
+            background: rgba(15, 15, 35, 0.8);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            padding: 1rem 0;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .nav-logo {
+            font-weight: 800;
+            font-size: 1.8rem;
+            background: var(--gradient-text);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-decoration: none;
+            position: relative;
+        }
+
+        .nav-logo::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--gradient-primary);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .nav-logo:hover::after {
+            transform: scaleX(1);
+        }
+
+        .nav-buttons {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .back-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.3s ease;
+            z-index: -1;
+        }
+
+        .back-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--glow);
+        }
+
+        .dark-mode-toggle {
+            background: var(--glass);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--light);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0.8rem;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .dark-mode-toggle:hover {
+            box-shadow: var(--glow);
+            transform: scale(1.1);
+        }
+
+        /* Main Content */
+        .main-content {
+            padding-top: 120px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 4rem;
+            position: relative;
+        }
+
+        .page-title {
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            background: var(--gradient-text);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            position: relative;
+            animation: textGlow 3s ease-in-out infinite alternate;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        @keyframes textGlow {
+            0% { filter: drop-shadow(0 0 5px rgba(0, 212, 255, 0.5)); }
+            100% { filter: drop-shadow(0 0 20px rgba(124, 58, 237, 0.8)); }
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Overview Section */
+        .overview-section {
+            background: var(--gradient-primary);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin: 2rem 0;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .overview-section::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: var(--gradient-primary);
+            z-index: -1;
+            border-radius: 20px;
+        }
+
+        .overview-section h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .overview-section p {
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        /* Day Cards */
+        .days-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+
+        .day-card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: all 0.5s ease;
+            position: relative;
+        }
+
+        .day-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: var(--gradient-primary);
+            transition: left 0.5s ease;
+        }
+
+        .day-card:hover::before {
+            left: 100%;
+        }
+
+        .day-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3), 0 0 30px rgba(124, 58, 237, 0.3);
+        }
+
+        .day-header {
+            padding: 2rem;
+            background: var(--gradient-primary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .day-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: rotate 10s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .day-number {
+            font-size: 3rem;
+            font-weight: 800;
+            color: rgba(255, 255, 255, 0.9);
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            margin-bottom: 1rem;
+        }
+
+        .day-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--light);
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .day-content {
+            padding: 2rem;
+        }
+
+        /* Media Container */
+        .media-container {
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px;
+            background: var(--glass);
+            padding: 1rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .section-media {
+            width: 100%;
+            height: auto;
+            max-height: 280px;
+            object-fit: contain;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            position: relative;
+            display: block;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .media-container::before {
+            content: '';
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            right: 1rem;
+            bottom: 1rem;
+            background: linear-gradient(45deg, rgba(0, 212, 255, 0.1), rgba(124, 58, 237, 0.1));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border-radius: 15px;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .day-card:hover .media-container::before {
+            opacity: 1;
+        }
+
+        .day-card:hover .section-media {
+            transform: scale(1.02);
+        }
+
+        .media-caption {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 0.8rem;
+            font-style: italic;
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        /* Concepts Section */
+        .concepts-section {
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .concepts-section::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            z-index: -1;
+            border-radius: 15px;
+        }
+
+        .concepts-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            color: white;
+        }
+
+        .topics-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .topics-list li {
+            padding: 0.8rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            padding-left: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .topics-list li::before {
+            content: '▶';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .topics-list li:hover {
+            padding-left: 2.5rem;
+            color: var(--primary);
+        }
+
+        .topics-list li:hover::before {
+            color: var(--tertiary);
+            transform: scale(1.2);
+        }
+
+        .topics-list li:last-child {
+            border-bottom: none;
+        }
+
+        /* Activity Section */
+        .activity-section {
+            margin-top: 1.5rem;
+            background: var(--gradient-primary);
+            border-radius: 15px;
+            padding: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .activity-section::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: var(--gradient-primary);
+            z-index: -1;
+            border-radius: 15px;
+        }
+
+        .activity-content {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: white;
+            font-weight: 600;
+            position: relative;
+            z-index: 2;
+        }
+
+        .activity-icon {
+            font-size: 1.5rem;
+            min-width: 24px;
+        }
+
+        /* Key Outcomes Section */
+        .outcomes-section {
+            background: linear-gradient(135deg, var(--tertiary), var(--accent));
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .outcomes-section::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(135deg, var(--tertiary), var(--accent));
+            z-index: -1;
+            border-radius: 20px;
+        }
+
+        .outcomes-section h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .outcomes-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .outcomes-list li {
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            padding-left: 3rem;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.5;
+        }
+
+        .outcomes-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 1rem;
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .outcomes-list li:last-child {
+            border-bottom: none;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            padding: 3rem 0 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 6rem;
+        }
+
+        .copyright {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-container {
+                padding: 0 1rem;
+            }
+
+            .nav-logo {
+                font-size: 1.5rem;
+            }
+
+            .nav-buttons {
+                gap: 1rem;
+            }
+
+            .back-btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+
+            .days-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .day-content {
+                padding: 1.5rem;
+            }
+
+            .main-content {
+                padding-top: 100px;
+            }
+
+            .page-title {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .overview-section, .outcomes-section {
+                padding: 1.5rem;
+            }
+
+            .section-media {
+                max-height: 220px;
+            }
+        }
+
+        /* Animation Classes */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .scale-in {
+            opacity: 0;
+            transform: scale(0.8);
+            animation: scaleIn 0.8s ease forwards;
+        }
+
+        @keyframes scaleIn {
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Delay classes */
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+        .delay-5 { animation-delay: 0.5s; }
+    </style>
 </head>
 <body>
-    <!-- Same navbar -->
+    <!-- Animated Background -->
+    <div class="bg-animation">
+        <div class="floating-shapes">
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+        </div>
+    </div>
 
-    <section class="course-detail">
-        <div class="container">
-            <div class="course-header">
-                <i class="fas fa-network-wired course-icon"></i>
-                <h1>Networking</h1>
-            </div>
-            
-            <div class="course-content">
-                <h2>Overview</h2>
-                <p>Fundamentals of computer networking and communication protocols.</p>
-                
-                <h2>Network Models</h2>
-                <ul>
-                    <li>OSI model layers</li>
-                    <li>TCP/IP protocol suite</li>
-                    <li>Network topologies</li>
-                    <li>Network devices (routers, switches)</li>
-                </ul>
-                
-                <h2>IP Networking</h2>
-                <ul>
-                    <li>IPv4 and IPv6 addressing</li>
-                    <li>Subnetting and CIDR</li>
-                    <li>Routing protocols</li>
-                    <li>DNS and DHCP</li>
-                </ul>
-                
-                <h2>Network Security</h2>
-                <ul>
-                    <li>Firewalls and VPNs</li>
-                    <li>Encryption techniques</li>
-                    <li>Authentication protocols</li>
-                    <li>Common vulnerabilities</li>
-                </ul>
-                
-                <h2>Practical Skills</h2>
-                <ul>
-                    <li>Network configuration</li>
-                    <li>Troubleshooting tools</li>
-                    <li>Packet analysis (Wireshark)</li>
-                    <li>Network simulation (Cisco Packet Tracer)</li>
-                </ul>
-                
-                <a href="index.html#courses" class="back-button"><i class="fas fa-arrow-left"></i> Back to All Modules</a>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">Digital FABLAB</a>
+            <div class="nav-buttons">
+                <a href="index.html" class="back-btn">
+                    <i class="fas fa-arrow-left"></i> Back to All Modules
+                </a>
+                <button class="dark-mode-toggle" id="darkModeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
             </div>
         </div>
-    </section>
+    </nav>
 
-    <!-- Same footer -->
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Page Header -->
+            <div class="page-header fade-in-up">
+                <h1 class="page-title">
+                    <i class="fas fa-network-wired"></i>
+                    Networking Mastery
+                </h1>
+                <p class="page-subtitle">From network fundamentals to advanced protocols - master the art of computer networking with industry-standard techniques</p>
+            </div>
+
+            <!-- Overview Section -->
+            <div class="overview-section scale-in delay-1">
+                <h3><i class="fas fa-book"></i> Overview</h3>
+                <p>This comprehensive 5-day structured learning plan covers Computer Networking fundamentals. Each day builds upon previous concepts, progressing from basic networking principles to advanced protocols and security, culminating in practical network configuration skills.</p>
+                <p><strong>Learning Outcomes:</strong> Master network models, protocols, IP addressing, security, and practical implementation using industry tools.</p>
+            </div>
+
+            <!-- Days Grid -->
+            <div class="days-grid">
+                <!-- Day 1 -->
+                <div class="day-card scale-in delay-1">
+                    <div class="day-header">
+                        <div class="day-number">01</div>
+                        <h2 class="day-title">Networking Fundamentals</h2>
+                    </div>
+                    <div class="day-content">
+                        <div class="media-container">
+                            <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Network Fundamentals" class="section-media">
+                            <div class="media-caption">Basic networking concepts and communication models</div>
+                        </div>
+                        <div class="concepts-section">
+                            <h3 class="concepts-title">
+                                <i class="fas fa-project-diagram"></i>
+                                Network Basics & Components
+                            </h3>
+                            <ul class="topics-list">
+                                <li>Introduction to computer networks and their importance</li>
+                                <li>Network types: LAN, WAN, MAN, PAN</li>
+                                <li>Network devices: routers, switches, hubs, modems</li>
+                                <li>Transmission media: wired and wireless technologies</li>
+                                <li>Network topologies: star, bus, ring, mesh, hybrid</li>
+                            </ul>
+                        </div>
+                        <div class="activity-section">
+                            <div class="activity-content">
+                                <i class="fas fa-laptop-code activity-icon"></i>
+                                <span>Hands-on: Network topology design using simulation software</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Day 2 -->
+                <div class="day-card scale-in delay-2">
+                    <div class="day-header">
+                        <div class="day-number">02</div>
+                        <h2 class="day-title">OSI & TCP/IP Models</h2>
+                    </div>
+                    <div class="day-content">
+                        <div class="media-container">
+                            <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="OSI Model Layers" class="section-media">
+                            <div class="media-caption">OSI model layers and TCP/IP protocol suite</div>
+                        </div>
+                        <div class="concepts-section">
+                            <h3 class="concepts-title">
+                                <i class="fas fa-layer-group"></i>
+                                7 Layers of OSI Model
+                            </h3>
+                            <ul class="topics-list">
+                                <li>Physical Layer: Transmission of raw bits over physical medium</li>
+                                <li>Data Link Layer: Framing, error detection, MAC addressing</li>
+                                <li>Network Layer: Logical addressing, routing, IP protocols</li>
+                                <li>Transport Layer: End-to-end communication, TCP/UDP</li>
+                                <li>Session, Presentation, and Application Layers</li>
+                            </ul>
+                        </div>
+                        <div class="concepts-section">
+                            <h3 class="concepts-title">
+                                <i class="fas fa-sitemap"></i>
+                                TCP/IP Protocol Suite
+                            </h3>
+                            <ul class="topics-list">
+                                <li>Comparison between OSI and TCP/IP models</li>
+                                <li>Application layer protocols: HTTP, FTP, SMTP, DNS</li>
+                                <li>Transport layer: TCP (connection-oriented) vs UDP (connectionless)</li>
+                                <li>Internet layer: IP, ICMP, ARP</li>
+                                <li>Network access layer: Ethernet, Wi-Fi protocols</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Day 3 -->
+                <div class="day-card scale-in delay-3">
+                    <div class="day-header">
+                        <div class="day-number">03</div>
+                        <h2 class="day-title">IP Addressing & Subnetting</h2>
+                    </div>
+                    <div class="day-content">
+                        <div class="media-container">
+                            <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="IP Addressing" class="section-media">
+                            <div class="media-caption">IPv4 and IPv6 addressing with subnetting techniques</div>
+                        </div>
+                        <div class="concepts-section">
+                            <h3 class="concepts-title">
+                                <i class="fas fa-map-marker-alt"></i>
+                                IP Addressing Fundamentals
+                            </h3>
+                            <ul class="topics-list">
+                                <li>IPv4 addressing: classes, public vs private IPs</li>
+                                <li>IPv6 addressing: structure, benefits over IPv4</li>
+                                <li>Subnetting: purpose, benefits, and calculation methods</li>
+                                <li>CIDR notation and VLSM (Variable Length Subnet Masking)</li>
+                                <li>Special IP addresses: loopback, broadcast, multicast</li>
+                            </ul>
+                        </div>
+                        <div class="activity-section">
+                            <div class="activity-content">
+                                <i class="fas fa-calculator activity-icon"></i>
+                                <span>Practical: Subnetting exercises and network design scenarios</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Day 4 -->
+                <div class="day-card scale-in delay-4">
+                    <div class="day-header">
+                        <div class="day-number">04</div>
+                        <h2 class="day-title">Network Protocols & Services</h2>
+                    </div>
+                    <div class="day-content">
+                        <div class="media-container">
+                            <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Network Protocols" class="section-media">
+                            <div class="media-caption">Essential network protocols and services</div>
+                        </div>
+                        <div class="concepts-section">
+                            <h3 class="concepts-title">
+                                <i class="fas fa-exchange-alt"></i>
+                                Core Network Protocols
+                            </h3>
+                            <ul class="topics-list">
+                                <li>DNS (Domain Name System): name resolution process</li>
+                                <li>DHCP (Dynamic Host Configuration Protocol): IP assignment</li>
+                                <li>HTTP/HTTPS: web communication protocols</li>
+                                <li>FTP, SFTP, TFTP: file transfer protocols</li>
+                                <li>SMTP, POP3, IMAP: email protocols</li>
+                            </ul>
+                        </div>
+                        <div class="concepts-section">
+                            <h3 class="concepts-title">
+                                <i class="fas fa-route"></i>
+                                Routing Protocols
+                            </h3>
+                            <ul class="topics-list">
+                                <li>Static vs dynamic routing</li>
+                                <li>Distance-vector protocols: RIP, IGRP</li>
+                                <li>Link-state protocols: OSPF, IS-IS</li>
+                                <li>Path-vector protocol: BGP</li>
+                                <li>Routing tables and path selection</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Day 5 -->
+                <div class="day-card scale-in delay-5">
+                    <div class="day-header">
+                        <div class="day-number">05</div>
+                        <h2 class="day-title">Network Security & Implementation</h2>
+                    </div>
+                    <div class="day-content">
+                        <div class="media-container">
+                            <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Network Security" class="section-media">
+                            <div class="media-caption">Network security measures and practical implementation</div>
+                        </div>
+                        <div class="concepts-section">
+                            <h3 class="concepts-title">
+                                <i class="fas fa-shield-alt"></i>
+                                Network Security Fundamentals
+                            </h3>
+                            <ul class="topics-list">
+                                <li>Firewalls: packet filtering, stateful inspection, application-level</li>
+                                <li>VPNs (Virtual Private Networks): types and encryption</li>
+                                <li>IDS/IPS (Intrusion Detection/Prevention Systems)</li>
+                                <li>Authentication protocols: RADIUS, TACACS+</li>
+                                <li>Common network attacks and mitigation techniques</li>
+                            </ul>
+                        </div>
+                        <div class="concepts-section">
+                            <h3 class="concepts-title">
+                                <i class="fas fa-tools"></i>
+                                Practical Implementation
+                            </h3>
+                            <ul class="topics-list">
+                                <li>Network configuration using Cisco Packet Tracer</li>
+                                <li>Basic router and switch configuration</li>
+                                <li>VLAN setup and inter-VLAN routing</li>
+                                <li>Network troubleshooting tools: ping, traceroute, ipconfig</li>
+                                <li>Packet analysis with Wireshark</li>
+                            </ul>
+                        </div>
+                        <div class="activity-section">
+                            <div class="activity-content">
+                                <i class="fas fa-network-wired activity-icon"></i>
+                                <span>Final Project: Design and implement a secure enterprise network</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Key Outcomes Section -->
+            <div class="outcomes-section fade-in-up">
+                <h3><i class="fas fa-trophy"></i> Key Outcomes Achieved</h3>
+                <ul class="outcomes-list">
+                    <li><strong>Network Fundamentals:</strong> Complete understanding of networking concepts, models, and protocols</li>
+                    <li><strong>IP Addressing Mastery:</strong> Proficiency in IPv4/IPv6 addressing and subnetting techniques</li>
+                    <li><strong>Protocol Knowledge:</strong> Deep understanding of essential networking protocols and services</li>
+                    <li><strong>Security Implementation:</strong> Ability to design and implement secure network infrastructures</li>
+                    <li><strong>Practical Skills:</strong> Hands-on experience with network simulation and configuration tools</li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="copyright">
+                <p>&copy; 2025 Digital FABLAB Portfolio. Crafted with passion by Kamran Ali.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Dark mode toggle functionality
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const body = document.body;
+        
+        // Check for saved theme preference
+        if (localStorage.getItem('darkMode') === 'enabled') {
+            body.classList.add('dark-mode');
+            darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        }
+        
+        // Toggle dark mode
+        darkModeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            
+            if (body.classList.contains('dark-mode')) {
+                localStorage.setItem('darkMode', 'enabled');
+                darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            } else {
+                localStorage.setItem('darkMode', 'disabled');
+                darkModeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+            }
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add scroll animation to elements
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all animated elements
+        document.querySelectorAll('.fade-in-up, .scale-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 100) {
+                navbar.style.background = 'rgba(15, 15, 35, 0.95)';
+                navbar.style.backdropFilter = 'blur(20px)';
+            } else {
+                navbar.style.background = 'rgba(15, 15, 35, 0.8)';
+                navbar.style.backdropFilter = 'blur(20px)';
+            }
+        });
+    </script>
 </body>
 </html>
