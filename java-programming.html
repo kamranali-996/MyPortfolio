@@ -5,269 +5,414 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Java OOP | Digital FABLAB</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #2196F3;
-            --secondary-color: #FF9800;
-            --text-color: #333;
-            --light-bg: #f9f9f9;
-            --dark-bg: #1a1a1a;
-            --dark-text: #f0f0f0;
-            --accent-color: #4CAF50;
-            --code-bg: #f8f8f8;
-            --code-border: #ddd;
-            --transition: all 0.3s ease;
-            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            --border-radius: 8px;
+            --primary: #00d4ff;
+            --secondary: #7c3aed;
+            --tertiary: #f59e0b;
+            --accent: #ef4444;
+            --dark: #0f0f23;
+            --darker: #0a0a1a;
+            --light: #ffffff;
+            --glass: rgba(255, 255, 255, 0.1);
+            --glass-dark: rgba(0, 0, 0, 0.2);
+            --glow: 0 0 20px rgba(0, 212, 255, 0.5);
+            --glow-purple: 0 0 20px rgba(124, 58, 237, 0.5);
+            --shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            --gradient-primary: linear-gradient(135deg, #00d4ff 0%, #7c3aed 50%, #f59e0b 100%);
+            --gradient-card: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+            --gradient-text: linear-gradient(90deg, #00d4ff, #7c3aed, #f59e0b);
+            --border-glow: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.8), transparent);
+        }
+
+        .dark-mode {
+            --dark: #ffffff;
+            --light: #0f0f23;
+            --glass: rgba(0, 0, 0, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', sans-serif;
+            background: var(--darker);
+            color: var(--light);
             line-height: 1.6;
-            color: var(--text-color);
-            background-color: var(--light-bg);
-            margin: 0;
-            padding: 0;
-            transition: var(--transition);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
         }
 
-        body.dark-mode {
-            color: var(--dark-text);
-            background-color: var(--dark-bg);
-            --code-bg: #2d2d2d;
-            --code-border: #555;
-        }
-
-        .container {
-            width: 90%;
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 20px 15px;
-        }
-
-        /* Navigation */
-        .navbar {
-            position: sticky;
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
             top: 0;
-            background-color: #fff;
-            box-shadow: var(--shadow);
-            z-index: 100;
-            padding: 15px 0;
-            transition: var(--transition);
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: var(--darker);
         }
 
-        body.dark-mode .navbar {
-            background-color: #222;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        .floating-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .shape {
+            position: absolute;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            opacity: 0.1;
+            animation: float 20s infinite linear;
+        }
+
+        .shape:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .shape:nth-child(2) {
+            width: 120px;
+            height: 120px;
+            left: 80%;
+            animation-delay: -5s;
+        }
+
+        .shape:nth-child(3) {
+            width: 60px;
+            height: 60px;
+            left: 50%;
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); }
+            100% { transform: translateY(-100px) rotate(360deg); }
+        }
+
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            backdrop-filter: blur(20px);
+            background: rgba(15, 15, 35, 0.8);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            padding: 1rem 0;
         }
 
         .nav-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
         }
 
         .nav-logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--primary-color);
+            font-weight: 800;
+            font-size: 1.8rem;
+            background: var(--gradient-text);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
             text-decoration: none;
-            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-logo::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--gradient-primary);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .nav-logo:hover::after {
+            transform: scaleX(1);
         }
 
         .nav-buttons {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 1.5rem;
         }
 
         .back-btn {
             display: flex;
             align-items: center;
-            gap: 5px;
-            color: var(--primary-color);
+            gap: 0.5rem;
+            color: var(--light);
             text-decoration: none;
             font-weight: 500;
-            padding: 8px 12px;
-            border-radius: var(--border-radius);
-            transition: var(--transition);
-            font-size: 0.9rem;
-        }
-
-        .back-btn:hover {
-            background-color: rgba(33, 150, 243, 0.1);
-        }
-
-        body.dark-mode .back-btn {
-            color: var(--dark-text);
-        }
-
-        body.dark-mode .back-btn:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-
-        .dark-mode-toggle {
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 1.1rem;
-            color: var(--text-color);
-            transition: var(--transition);
-            padding: 8px;
-            border-radius: 50%;
-        }
-
-        .dark-mode-toggle:hover {
-            background-color: rgba(0, 0, 0, 0.05);
-        }
-
-        body.dark-mode .dark-mode-toggle {
-            color: var(--dark-text);
-        }
-
-        body.dark-mode .dark-mode-toggle:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-
-        /* Content Styles */
-        .content {
-            background-color: #fff;
-            padding: 30px;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-            margin: 20px 0 40px;
-        }
-
-        body.dark-mode .content {
-            background-color: #2a2a2a;
-        }
-
-        h1 {
-            color: var(--primary-color);
-            font-size: 2rem;
-            margin-bottom: 25px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid var(--primary-color);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        h2 {
-            color: var(--primary-color);
-            margin-top: 35px;
-            margin-bottom: 15px;
-            font-size: 1.4rem;
-            background-color: rgba(33, 150, 243, 0.1);
-            padding: 10px 15px;
-            border-radius: var(--border-radius);
-            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
             position: relative;
-        }
-
-        .day-number {
-            background: var(--primary-color);
-            color: white;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            margin-right: 10px;
-            font-size: 0.9rem;
-        }
-
-        h3 {
-            color: var(--accent-color);
-            margin-top: 25px;
-            margin-bottom: 12px;
-            font-size: 1.2rem;
-        }
-
-        hr {
-            border: 0;
-            height: 2px;
-            background: linear-gradient(to right, transparent, var(--primary-color), transparent);
-            margin: 30px 0;
-        }
-
-        body.dark-mode hr {
-            background: linear-gradient(to right, transparent, #666, transparent);
-        }
-
-        ul {
-            padding-left: 20px;
-            margin: 15px 0 25px;
-        }
-
-        li {
-            margin-bottom: 8px;
-            position: relative;
-            padding-left: 10px;
-            line-height: 1.5;
-        }
-
-        li:before {
-            content: '▶';
-            color: var(--secondary-color);
-            font-weight: bold;
-            margin-right: 10px;
-            font-size: 0.8rem;
-        }
-
-        /* Code Blocks */
-        .code-section {
-            background-color: var(--code-bg);
-            border: 1px solid var(--code-border);
-            border-radius: var(--border-radius);
-            margin: 20px 0;
             overflow: hidden;
         }
 
-        .code-header {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 10px 15px;
-            font-weight: 600;
+        .back-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.3s ease;
+            z-index: -1;
+        }
+
+        .back-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--glow);
+        }
+
+        .dark-mode-toggle {
+            background: var(--glass);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--light);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0.8rem;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .dark-mode-toggle:hover {
+            box-shadow: var(--glow);
+            transform: scale(1.1);
+        }
+
+        /* Main Content */
+        .main-content {
+            padding-top: 120px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 4rem;
+            position: relative;
+        }
+
+        .page-title {
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            background: var(--gradient-text);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            position: relative;
+            animation: textGlow 3s ease-in-out infinite alternate;
             display: flex;
             align-items: center;
-            gap: 8px;
+            justify-content: center;
+            gap: 1rem;
         }
 
-        .code-content {
-            padding: 15px;
-            font-family: 'Courier New', monospace;
-            font-size: 0.9rem;
-            line-height: 1.4;
-            overflow-x: auto;
-            white-space: pre;
+        @keyframes textGlow {
+            0% { filter: drop-shadow(0 0 5px rgba(0, 212, 255, 0.5)); }
+            100% { filter: drop-shadow(0 0 20px rgba(124, 58, 237, 0.8)); }
         }
 
-        body.dark-mode .code-content {
-            background-color: var(--code-bg);
-            color: #e8e8e8;
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 600px;
+            margin: 0 auto;
         }
 
-        /* Key Concepts */
-        .concepts-section {
-            background: linear-gradient(135deg, var(--accent-color), #45a049);
-            color: white;
-            padding: 20px;
-            border-radius: var(--border-radius);
-            margin: 20px 0;
+        /* Overview Section */
+        .overview-section {
+            background: var(--gradient-primary);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin: 2rem 0;
+            position: relative;
+            overflow: hidden;
             box-shadow: var(--shadow);
         }
 
-        .concepts-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 10px;
+        .overview-section::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: var(--gradient-primary);
+            z-index: -1;
+            border-radius: 20px;
+        }
+
+        .overview-section h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: white;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 0.8rem;
+        }
+
+        .overview-section p {
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        /* Day Cards */
+        .days-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+
+        .day-card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: all 0.5s ease;
+            position: relative;
+        }
+
+        .day-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: var(--gradient-primary);
+            transition: left 0.5s ease;
+        }
+
+        .day-card:hover::before {
+            left: 100%;
+        }
+
+        .day-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3), 0 0 30px rgba(124, 58, 237, 0.3);
+        }
+
+        .day-header {
+            padding: 2rem;
+            background: var(--gradient-primary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .day-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: rotate 10s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .day-number {
+            font-size: 3rem;
+            font-weight: 800;
+            color: rgba(255, 255, 255, 0.9);
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            margin-bottom: 1rem;
+        }
+
+        .day-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--light);
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .day-content {
+            padding: 2rem;
+        }
+
+        /* Concepts Section */
+        .concepts-section {
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .concepts-section::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            z-index: -1;
+            border-radius: 15px;
+        }
+
+        .concepts-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            color: white;
         }
 
         .concepts-list {
@@ -277,91 +422,241 @@
         }
 
         .concepts-list li {
-            padding: 5px 0;
-            padding-left: 20px;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            padding-left: 2rem;
+            transition: all 0.3s ease;
+            color: rgba(255, 255, 255, 0.9);
         }
 
-        .concepts-list li:before {
+        .concepts-list li::before {
             content: '✓';
-            color: white;
+            position: absolute;
+            left: 0;
+            color: var(--tertiary);
             font-weight: bold;
-            margin-right: 10px;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
         }
 
-        /* Overview Section */
-        .overview-section {
-            background: linear-gradient(135deg, var(--secondary-color), #f57c00);
+        .concepts-list li:hover {
+            padding-left: 2.2rem;
             color: white;
-            padding: 25px;
-            border-radius: var(--border-radius);
-            margin: 20px 0;
-            box-shadow: var(--shadow);
         }
 
-        .overview-section h3 {
+        .concepts-list li:hover::before {
+            color: var(--primary);
+            transform: scale(1.2);
+        }
+
+        .concepts-list li:last-child {
+            border-bottom: none;
+        }
+
+        /* Code Sections */
+        .code-section {
+            margin: 1.5rem 0;
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px;
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .code-header {
+            background: var(--gradient-primary);
             color: white;
-            margin-top: 0;
+            padding: 1rem 1.5rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            font-size: 1.1rem;
+        }
+
+        .code-content {
+            padding: 1.5rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            overflow-x: auto;
+            white-space: pre;
+            color: rgba(255, 255, 255, 0.9);
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        /* Key Outcomes Section */
+        .outcomes-section {
+            background: linear-gradient(135deg, var(--tertiary), var(--accent));
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .outcomes-section::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(135deg, var(--tertiary), var(--accent));
+            z-index: -1;
+            border-radius: 20px;
+        }
+
+        .outcomes-section h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .outcomes-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .outcomes-list li {
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            padding-left: 3rem;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.5;
+        }
+
+        .outcomes-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 1rem;
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .outcomes-list li:last-child {
+            border-bottom: none;
         }
 
         /* Footer */
         footer {
-            background-color: #222;
-            color: #fff;
-            padding: 25px 0;
-            text-align: center;
-            margin-top: 40px;
-        }
-
-        body.dark-mode footer {
-            background-color: #111;
+            background: var(--dark);
+            padding: 3rem 0 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 6rem;
         }
 
         .copyright {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
             font-size: 0.9rem;
-            opacity: 0.8;
         }
 
+        /* Responsive Design */
         @media (max-width: 768px) {
-            .container {
-                width: 95%;
-                padding: 10px;
+            .nav-container {
+                padding: 0 1rem;
             }
-            
-            .content {
-                padding: 20px;
-            }
-            
-            h1 {
-                font-size: 1.8rem;
-                flex-direction: column;
-                text-align: center;
-                gap: 5px;
-            }
-            
-            h2 {
-                font-size: 1.3rem;
-                display: block;
-            }
-            
+
             .nav-logo {
-                font-size: 1.3rem;
+                font-size: 1.5rem;
             }
-            
+
+            .nav-buttons {
+                gap: 1rem;
+            }
+
             .back-btn {
-                padding: 6px 10px;
-                font-size: 0.8rem;
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
             }
-            
-            .code-content {
-                font-size: 0.8rem;
-                padding: 10px;
+
+            .container {
+                padding: 0 1rem;
+            }
+
+            .days-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .day-content {
+                padding: 1.5rem;
+            }
+
+            .main-content {
+                padding-top: 100px;
+            }
+
+            .page-title {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .overview-section, .outcomes-section {
+                padding: 1.5rem;
             }
         }
+
+        /* Animation Classes */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .scale-in {
+            opacity: 0;
+            transform: scale(0.8);
+            animation: scaleIn 0.8s ease forwards;
+        }
+
+        @keyframes scaleIn {
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Delay classes */
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+        .delay-5 { animation-delay: 0.5s; }
+        .delay-6 { animation-delay: 0.6s; }
+        .delay-7 { animation-delay: 0.7s; }
     </style>
 </head>
-<body>              
+<body>
+    <!-- Animated Background -->
+    <div class="bg-animation">
+        <div class="floating-shapes">
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+        </div>
+    </div>
+
+    <!-- Navbar -->
     <nav class="navbar">
-        <div class="container nav-container">
+        <div class="nav-container">
             <a href="index.html" class="nav-logo">Digital FABLAB</a>
             <div class="nav-buttons">
                 <a href="index.html" class="back-btn">
@@ -374,34 +669,50 @@
         </div>
     </nav>
 
-    <div class="container">
-        <div class="content">
-            <h1><i class="fab fa-java"></i> 7-Day OOP Learning Journey with Java</h1>
-            
-            <div class="overview-section">
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Page Header -->
+            <div class="page-header fade-in-up">
+                <h1 class="page-title">
+                    <i class="fab fa-java"></i>
+                    7-Day OOP Learning Journey
+                </h1>
+                <p class="page-subtitle">Master Object-Oriented Programming in Java - from fundamentals to advanced concepts with hands-on projects</p>
+            </div>
+
+            <!-- Overview Section -->
+            <div class="overview-section scale-in delay-1">
                 <h3><i class="fas fa-book"></i> Overview</h3>
                 <p>This comprehensive 7-day structured learning plan (2 hours/day) covers Object-Oriented Programming fundamentals in Java. Each day builds upon previous concepts, progressing from basic programming to advanced OOP principles, culminating in a complete Library Management System project.</p>
                 <p><strong>Learning Outcomes:</strong> Master the four OOP pillars (Encapsulation, Abstraction, Inheritance, Polymorphism) and apply them in real-world scenarios.</p>
             </div>
-            
-            <h2><span class="day-number">1</span>Programming Fundamentals</h2>
-            
-            <div class="concepts-section">
-                <div class="concepts-title">
-                    <i class="fas fa-lightbulb"></i> Key Concepts Learned
-                </div>
-                <ul class="concepts-list">
-                    <li>Variables, operators, loops, and conditionals</li>
-                    <li>Function creation and simple problem-solving</li>
-                    <li>Basic algorithms: factorial, prime checking, Fibonacci</li>
-                </ul>
-            </div>
 
-            <div class="code-section">
-                <div class="code-header">
-                    <i class="fas fa-code"></i> Day1Basics.java
-                </div>
-                <div class="code-content">// Day1Basics.java
+            <!-- Days Grid -->
+            <div class="days-grid">
+                <!-- Day 1 -->
+                <div class="day-card scale-in delay-1">
+                    <div class="day-header">
+                        <div class="day-number">01</div>
+                        <h2 class="day-title">Programming Fundamentals</h2>
+                    </div>
+                    <div class="day-content">
+                        <div class="concepts-section">
+                            <div class="concepts-title">
+                                <i class="fas fa-lightbulb"></i> Key Concepts Learned
+                            </div>
+                            <ul class="concepts-list">
+                                <li>Variables, operators, loops, and conditionals</li>
+                                <li>Function creation and simple problem-solving</li>
+                                <li>Basic algorithms: factorial, prime checking, Fibonacci</li>
+                            </ul>
+                        </div>
+
+                        <div class="code-section">
+                            <div class="code-header">
+                                <i class="fas fa-code"></i> Day1Basics.java
+                            </div>
+                            <div class="code-content">// Day1Basics.java
 public class Day1Basics {
     static int factorial(int n) {
         int result = 1;
@@ -422,28 +733,33 @@ public class Day1Basics {
         System.out.println("Is 13 prime? " + isPrime(13));
     }
 }</div>
-            </div>
-            
-            <hr>
-            
-            <h2><span class="day-number">2</span>Functions & Recursion</h2>
-            
-            <div class="concepts-section">
-                <div class="concepts-title">
-                    <i class="fas fa-lightbulb"></i> Key Concepts Learned
+                        </div>
+                    </div>
                 </div>
-                <ul class="concepts-list">
-                    <li>Modular programming with functions</li>
-                    <li>Recursive algorithm implementation</li>
-                    <li>Base case and recursive case design</li>
-                </ul>
-            </div>
 
-            <div class="code-section">
-                <div class="code-header">
-                    <i class="fas fa-code"></i> Day2Functions.java
-                </div>
-                <div class="code-content">// Day2Functions.java
+                <!-- Day 2 -->
+                <div class="day-card scale-in delay-2">
+                    <div class="day-header">
+                        <div class="day-number">02</div>
+                        <h2 class="day-title">Functions & Recursion</h2>
+                    </div>
+                    <div class="day-content">
+                        <div class="concepts-section">
+                            <div class="concepts-title">
+                                <i class="fas fa-lightbulb"></i> Key Concepts Learned
+                            </div>
+                            <ul class="concepts-list">
+                                <li>Modular programming with functions</li>
+                                <li>Recursive algorithm implementation</li>
+                                <li>Base case and recursive case design</li>
+                            </ul>
+                        </div>
+
+                        <div class="code-section">
+                            <div class="code-header">
+                                <i class="fas fa-code"></i> Day2Functions.java
+                            </div>
+                            <div class="code-content">// Day2Functions.java
 public class Day2Functions {
     static int factorialRec(int n) {
         if (n <= 1) return 1;
@@ -460,28 +776,33 @@ public class Day2Functions {
         System.out.println("Fibonacci(6) = " + fibRec(6));
     }
 }</div>
-            </div>
-            
-            <hr>
-            
-            <h2><span class="day-number">3</span>Classes & Objects</h2>
-            
-            <div class="concepts-section">
-                <div class="concepts-title">
-                    <i class="fas fa-lightbulb"></i> Key Concepts Learned
+                        </div>
+                    </div>
                 </div>
-                <ul class="concepts-list">
-                    <li>Class definition and object instantiation</li>
-                    <li>Constructors and method implementation</li>
-                    <li>Instance variables and method behavior</li>
-                </ul>
-            </div>
 
-            <div class="code-section">
-                <div class="code-header">
-                    <i class="fas fa-code"></i> Car.java & Day3CarDemo.java
-                </div>
-                <div class="code-content">// Car.java
+                <!-- Day 3 -->
+                <div class="day-card scale-in delay-3">
+                    <div class="day-header">
+                        <div class="day-number">03</div>
+                        <h2 class="day-title">Classes & Objects</h2>
+                    </div>
+                    <div class="day-content">
+                        <div class="concepts-section">
+                            <div class="concepts-title">
+                                <i class="fas fa-lightbulb"></i> Key Concepts Learned
+                            </div>
+                            <ul class="concepts-list">
+                                <li>Class definition and object instantiation</li>
+                                <li>Constructors and method implementation</li>
+                                <li>Instance variables and method behavior</li>
+                            </ul>
+                        </div>
+
+                        <div class="code-section">
+                            <div class="code-header">
+                                <i class="fas fa-code"></i> Car.java & Day3CarDemo.java
+                            </div>
+                            <div class="code-content">// Car.java
 class Car {
     String brand, model;
     int year, mileage;
@@ -510,28 +831,33 @@ public class Day3CarDemo {
         c1.drive(120);
     }
 }</div>
-            </div>
-            
-            <hr>
-            
-            <h2><span class="day-number">4</span>Encapsulation & Abstraction</h2>
-            
-            <div class="concepts-section">
-                <div class="concepts-title">
-                    <i class="fas fa-lightbulb"></i> Key Concepts Learned
+                        </div>
+                    </div>
                 </div>
-                <ul class="concepts-list">
-                    <li>Access modifiers (private, public) for data hiding</li>
-                    <li>Getter and setter methods for controlled access</li>
-                    <li>Data validation and business logic encapsulation</li>
-                </ul>
-            </div>
 
-            <div class="code-section">
-                <div class="code-header">
-                    <i class="fas fa-code"></i> BankAccount.java & Day4BankDemo.java
-                </div>
-                <div class="code-content">// BankAccount.java
+                <!-- Day 4 -->
+                <div class="day-card scale-in delay-4">
+                    <div class="day-header">
+                        <div class="day-number">04</div>
+                        <h2 class="day-title">Encapsulation & Abstraction</h2>
+                    </div>
+                    <div class="day-content">
+                        <div class="concepts-section">
+                            <div class="concepts-title">
+                                <i class="fas fa-lightbulb"></i> Key Concepts Learned
+                            </div>
+                            <ul class="concepts-list">
+                                <li>Access modifiers (private, public) for data hiding</li>
+                                <li>Getter and setter methods for controlled access</li>
+                                <li>Data validation and business logic encapsulation</li>
+                            </ul>
+                        </div>
+
+                        <div class="code-section">
+                            <div class="code-header">
+                                <i class="fas fa-code"></i> BankAccount.java & Day4BankDemo.java
+                            </div>
+                            <div class="code-content">// BankAccount.java
 class BankAccount {
     private String accountNumber;
     private String owner;
@@ -568,29 +894,34 @@ public class Day4BankDemo {
         acct.display();
     }
 }</div>
-            </div>
-            
-            <hr>
-            
-            <h2><span class="day-number">5</span>Inheritance</h2>
-            
-            <div class="concepts-section">
-                <div class="concepts-title">
-                    <i class="fas fa-lightbulb"></i> Key Concepts Learned
+                        </div>
+                    </div>
                 </div>
-                <ul class="concepts-list">
-                    <li>Code reusability through inheritance</li>
-                    <li>Parent-child class relationships</li>
-                    <li>Method overriding with @Override annotation</li>
-                    <li>Super keyword for parent class access</li>
-                </ul>
-            </div>
 
-            <div class="code-section">
-                <div class="code-header">
-                    <i class="fas fa-code"></i> Person.java & Day5InheritanceDemo.java
-                </div>
-                <div class="code-content">// Person.java
+                <!-- Day 5 -->
+                <div class="day-card scale-in delay-5">
+                    <div class="day-header">
+                        <div class="day-number">05</div>
+                        <h2 class="day-title">Inheritance</h2>
+                    </div>
+                    <div class="day-content">
+                        <div class="concepts-section">
+                            <div class="concepts-title">
+                                <i class="fas fa-lightbulb"></i> Key Concepts Learned
+                            </div>
+                            <ul class="concepts-list">
+                                <li>Code reusability through inheritance</li>
+                                <li>Parent-child class relationships</li>
+                                <li>Method overriding with @Override annotation</li>
+                                <li>Super keyword for parent class access</li>
+                            </ul>
+                        </div>
+
+                        <div class="code-section">
+                            <div class="code-header">
+                                <i class="fas fa-code"></i> Person.java & Day5InheritanceDemo.java
+                            </div>
+                            <div class="code-content">// Person.java
 class Person {
     String name;
     int age;
@@ -627,29 +958,34 @@ public class Day5InheritanceDemo {
         s.display();
     }
 }</div>
-            </div>
-            
-            <hr>
-            
-            <h2><span class="day-number">6</span>Polymorphism</h2>
-            
-            <div class="concepts-section">
-                <div class="concepts-title">
-                    <i class="fas fa-lightbulb"></i> Key Concepts Learned
+                        </div>
+                    </div>
                 </div>
-                <ul class="concepts-list">
-                    <li>Runtime polymorphism with abstract classes</li>
-                    <li>Method overriding for dynamic behavior</li>
-                    <li>Abstract methods and concrete implementations</li>
-                    <li>Polymorphic method calls and late binding</li>
-                </ul>
-            </div>
 
-            <div class="code-section">
-                <div class="code-header">
-                    <i class="fas fa-code"></i> Shape.java & Day6PolymorphismDemo.java
-                </div>
-                <div class="code-content">// Shape.java
+                <!-- Day 6 -->
+                <div class="day-card scale-in delay-6">
+                    <div class="day-header">
+                        <div class="day-number">06</div>
+                        <h2 class="day-title">Polymorphism</h2>
+                    </div>
+                    <div class="day-content">
+                        <div class="concepts-section">
+                            <div class="concepts-title">
+                                <i class="fas fa-lightbulb"></i> Key Concepts Learned
+                            </div>
+                            <ul class="concepts-list">
+                                <li>Runtime polymorphism with abstract classes</li>
+                                <li>Method overriding for dynamic behavior</li>
+                                <li>Abstract methods and concrete implementations</li>
+                                <li>Polymorphic method calls and late binding</li>
+                            </ul>
+                        </div>
+
+                        <div class="code-section">
+                            <div class="code-header">
+                                <i class="fas fa-code"></i> Shape.java & Day6PolymorphismDemo.java
+                            </div>
+                            <div class="code-content">// Shape.java
 abstract class Shape {
     abstract double area();
 }
@@ -679,29 +1015,34 @@ public class Day6PolymorphismDemo {
         System.out.println("Rectangle area = " + s2.area());
     }
 }</div>
-            </div>
-            
-            <hr>
-            
-            <h2><span class="day-number">7</span>Mini Project - Library Management System</h2>
-            
-            <div class="concepts-section">
-                <div class="concepts-title">
-                    <i class="fas fa-lightbulb"></i> Project Implementation
+                        </div>
+                    </div>
                 </div>
-                <ul class="concepts-list">
-                    <li>Applied Encapsulation, Inheritance, and Polymorphism</li>
-                    <li>Real-world system design with multiple classes</li>
-                    <li>Data management and object relationships</li>
-                    <li>Portfolio-ready project demonstration</li>
-                </ul>
-            </div>
 
-            <div class="code-section">
-                <div class="code-header">
-                    <i class="fas fa-code"></i> Library Management System - Day7LibraryDemo.java
-                </div>
-                <div class="code-content">// Book.java
+                <!-- Day 7 -->
+                <div class="day-card scale-in delay-7">
+                    <div class="day-header">
+                        <div class="day-number">07</div>
+                        <h2 class="day-title">Library Management System</h2>
+                    </div>
+                    <div class="day-content">
+                        <div class="concepts-section">
+                            <div class="concepts-title">
+                                <i class="fas fa-lightbulb"></i> Project Implementation
+                            </div>
+                            <ul class="concepts-list">
+                                <li>Applied Encapsulation, Inheritance, and Polymorphism</li>
+                                <li>Real-world system design with multiple classes</li>
+                                <li>Data management and object relationships</li>
+                                <li>Portfolio-ready project demonstration</li>
+                            </ul>
+                        </div>
+
+                        <div class="code-section">
+                            <div class="code-header">
+                                <i class="fas fa-code"></i> Library Management System - Day7LibraryDemo.java
+                            </div>
+                            <div class="code-content">// Book.java
 class Book {
     String title, author, isbn;
 
@@ -768,25 +1109,29 @@ public class Day7LibraryDemo {
         lib.showBooks();
     }
 }</div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div class="overview-section">
+            <!-- Key Outcomes Section -->
+            <div class="outcomes-section fade-in-up">
                 <h3><i class="fas fa-trophy"></i> Key Outcomes Achieved</h3>
-                <ul style="list-style: none; padding: 0; margin: 10px 0;">
-                    <li style="padding: 5px 0;"><strong>✓ OOP Mastery:</strong> Complete understanding of Encapsulation, Abstraction, Inheritance, and Polymorphism</li>
-                    <li style="padding: 5px 0;"><strong>✓ Real-world Application:</strong> Learned system design principles for practical Java development</li>
-                    <li style="padding: 5px 0;"><strong>✓ Portfolio Project:</strong> Completed Library Management System demonstrating all OOP concepts</li>
-                    <li style="padding: 5px 0;"><strong>✓ Programming Foundation:</strong> Solid base for advanced Java topics and frameworks</li>
+                <ul class="outcomes-list">
+                    <li><strong>OOP Mastery:</strong> Complete understanding of Encapsulation, Abstraction, Inheritance, and Polymorphism</li>
+                    <li><strong>Real-world Application:</strong> Learned system design principles for practical Java development</li>
+                    <li><strong>Portfolio Project:</strong> Completed Library Management System demonstrating all OOP concepts</li>
+                    <li><strong>Programming Foundation:</strong> Solid base for advanced Java topics and frameworks</li>
                 </ul>
             </div>
-            
         </div>
-    </div>
+    </main>
 
+    <!-- Footer -->
     <footer>
         <div class="container">
             <div class="copyright">
-                <p>&copy; 2025 Digital FABLAB. All rights reserved.</p>
+                <p>&copy; 2025 Digital FABLAB Portfolio. Crafted with passion by Kamran Ali.</p>
             </div>
         </div>
     </footer>
@@ -796,26 +1141,67 @@ public class Day7LibraryDemo {
         const darkModeToggle = document.getElementById('darkModeToggle');
         const body = document.body;
         
-        // Check for saved theme preference or prefer-color-scheme
-        const savedTheme = localStorage.getItem('theme');
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        
-        // Apply saved theme or system preference
-        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+        // Check for saved theme preference
+        if (localStorage.getItem('darkMode') === 'enabled') {
             body.classList.add('dark-mode');
             darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
         }
         
         // Toggle dark mode
         darkModeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            
             if (body.classList.contains('dark-mode')) {
-                body.classList.remove('dark-mode');
-                darkModeToggle.innerHTML = '<i class="fas fa-moon"></i>';
-                localStorage.setItem('theme', 'light');
-            } else {
-                body.classList.add('dark-mode');
+                localStorage.setItem('darkMode', 'enabled');
                 darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-                localStorage.setItem('theme', 'dark');
+            } else {
+                localStorage.setItem('darkMode', 'disabled');
+                darkModeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+            }
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add scroll animation to elements
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all animated elements
+        document.querySelectorAll('.fade-in-up, .scale-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 100) {
+                navbar.style.background = 'rgba(15, 15, 35, 0.95)';
+                navbar.style.backdropFilter = 'blur(20px)';
+            } else {
+                navbar.style.background = 'rgba(15, 15, 35, 0.8)';
+                navbar.style.backdropFilter = 'blur(20px)';
             }
         });
     </script>
